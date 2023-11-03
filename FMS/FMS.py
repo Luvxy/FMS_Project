@@ -14,6 +14,7 @@ from tkinter import messagebox
 import datetime
 from tkinter import simpledialog
 from PIL import ImageGrab
+import traceback
 
 # 매크로 내용
 # 1. 받아온 데이터를 웹사이트에 입력
@@ -78,6 +79,7 @@ def data_print(_data, num, type_num):
             log(str(_data.iloc[active_num,type_num]))
     except:
         log("데이터가 없습니다.")
+        traceback.print_exc()   
     
 #엑셀 path select
 def select_file():
@@ -110,19 +112,8 @@ def get_data_from_excel(_path, date):
     # 엑셀 파일을 데이터프레임으로 읽어옵니다.
     df = pd.read_excel(_path, sheet_name=str(date))
 
-    # 데이터프레임의 행 수를 얻습니다.
-    row_count = len(df)
-
     # data return
     return df
-
-#엑셀 정렬
-def data_solt(_data, column_name):
-    #data sort
-    sorted_df = data.sort_values(by=column_name, ascending=True)
-    
-    #save sorted xlsx file
-    sorted_df.to_excel(date+'xlsx', index=False)
 
 # 2. 원하는 작업 선택
 # 작업 종류: 이용자 등록, 접수등록, 제공등록, 접수목록 찾기, 제공목록 찾기
@@ -143,6 +134,7 @@ def restart_sign_new_user():
     y_plus = 28
     is_data = True
     i = 1
+    is_match = False
     
     pyautogui.click(1720, 295)
     time.sleep(1)
@@ -220,7 +212,7 @@ def restart_sign_new_user():
 
         if is_match:
             time.sleep(0.5)
-            pyautogui.press('enter')
+            pyautogui.press("enter")
         
         # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
         pyautogui.moveTo(456,340)
@@ -615,6 +607,7 @@ def get_date():
         date = input_date
     except ValueError:
         result_label.config(text="날짜가 올바르지 않습니다.")
+        
 
 #~#
 window = tk.Tk()
@@ -639,6 +632,7 @@ path_selector = tk.Button(button_frame, text='파일 선택', command=lambda: se
 next_button = tk.Button(button_frame, text="다음", command=lambda: data_print(data,1, type_num))
 back_button = tk.Button(button_frame, text="이전", command=lambda: data_print(data,-1, type_num))
 start_button = tk.Button(button_frame, text="시작", command=lambda: start_bt(combobox.get()))
+#exit_excel_button = tk.Button(button_frame, text="엑셀 종료", command=lambda: exit_excel())
 
 # 설정 값을 입력받는 프레임 추가
 settings_frame = tk.Frame(window)
@@ -657,6 +651,7 @@ next_button.pack(side="left")
 path_selector.pack(side="right")
 combobox.pack(side="right")
 start_button.pack(side="right")
+#exit_excel_button.pack(side="right")
 
 # 로그 창 (Text 위젯) 추가
 log_text = tk.Text(window, height=18, width=45)

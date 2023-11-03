@@ -1,6 +1,7 @@
+import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from ui_file import Ui_MainWindow  # Replace 'ui_file' with the actual module name.
-from button_functions import on_button1_clicked, on_button2_clicked, on_button3_clicked
+from ui_FMS import Ui_MainWindow  # Replace 'ui_file' with the actual module name.
+from button_functions import *
 
 class MyMainWindow(QMainWindow):
     def __init__(self):
