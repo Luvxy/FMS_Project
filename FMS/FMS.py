@@ -20,7 +20,7 @@ from PIL import ImageGrab
 # 2. 웹사이트의 저장 버튼을 누름
 # 3. 다음 데이터를 입력하기 전에 3초간 대기
 # 4. 반복
-# 정명순
+# 안길동
 
 # background exe program
 
@@ -142,6 +142,7 @@ def restart_sign_new_user():
     x1, y1, x2, y2 = 700, 500, 780, 515
     y_plus = 28
     is_data = True
+    i = 1
     
     pyautogui.click(1720, 295)
     time.sleep(1)
@@ -149,18 +150,20 @@ def restart_sign_new_user():
     pyperclip.copy(user_name)
     pyautogui.hotkey('ctrl', 'v')
     pyautogui.press("f2")
+    time.sleep(0.5)
 
     while is_data:
         img = ImageGrab.grab((x1, y1, x2, y2))
-        img.save("test.png")
+        img.save("test"+str(i)+".png")
 
-        image = cv2.imread("test.png")
+        image = cv2.imread("test"+str(i)+".png")
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         text = tr.image_to_string(gray, lang='eng')
 
         # Use a regular expression to extract numbers from the text
         numbers = re.findall(r'\d+', text)
-
+        print(numbers)
+        
         # If you want to access individual numbers, you can access them by index
         if len(numbers) >= 2:
             number1 = numbers[0][2:4]
@@ -171,7 +174,8 @@ def restart_sign_new_user():
         else:
             is_data = False
             return
-
+            
+        print(numbers)
         user_num = str(data.iloc[num, 5]).split('-')
         if user_num[0] == str(all_number):
             pyautogui.click(x=x1,y=y1,clicks=2,button="left")
@@ -181,11 +185,43 @@ def restart_sign_new_user():
         y1 += y_plus
         y2 += y_plus    
 
-        x1, y1, x2, y2 = 700, 500, 780, 515
+        i += 1
+        print(i)
+
+    x1, y1, x2, y2 = 700, 500, 780, 515
+    i = 1
 
     if is_data:
         time.sleep(0.5)
-        pyautogui.press("enter")
+        start_time = time.time()
+        green_color = (51, 96, 52)  # (R, G, B) values for pure green
+        while True:
+            # Take a screenshot of the entire screen
+            screenshot = pyautogui.screenshot()
+            green_found = False  # Flag to check if green color is found
+            # Search for the green color in the screenshot
+            for x in range(screenshot.width):
+                for y in range(screenshot.height):
+                    pixel_color = screenshot.getpixel((1109, 218))
+                    if pixel_color == green_color:
+                        # Green color found, click a button (you can modify this action)
+                        pyautogui.click(1109, 218)
+                        print("Green color found at ({}, {})".format(1109, 218))
+                        green_found = True
+                        is_match = True
+                        break  # Exit the inner loop
+
+                if green_found:
+                    break  # Exit the outer loop
+
+            # Check if 3 seconds have passed
+            if time.time() - start_time >= 2:
+                break
+
+        if is_match:
+            time.sleep(0.5)
+            pyautogui.press('enter')
+        
         # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
         pyautogui.moveTo(456,340)
         pyautogui.click(clicks=1, button='left')
@@ -321,6 +357,7 @@ def restart_sign_new_user():
             pyautogui.press('enter')
             time.sleep(2)
             pyautogui.press('enter')
+            pyautogui.click(1808,289)
             data_print(data,1, type_num)
             pyautogui.hotkey('alt','tab')
         else:
@@ -361,6 +398,7 @@ def sign_new_user(user_data, date):
     num = int(active_num)
 
     # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
+    pyautogui.hotkey('alt','tab')
     pyautogui.moveTo(456,340)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.5)
@@ -392,7 +430,7 @@ def sign_new_user(user_data, date):
     pyautogui.hotkey('ctrl', 'v')
     pyperclip.copy(user_num[1])
     pyautogui.hotkey('ctrl', 'v')
-    time.sleep(1)
+    time.sleep(0.5)
 
     is_match = False
     #Point(x=1144, y=212)
@@ -424,7 +462,8 @@ def sign_new_user(user_data, date):
             break
 
     if is_match:
-        time.sleep(0.5)
+        time.sleep(1)
+        pyautogui.press('enter')
         restart_sign_new_user()
         return
     
@@ -452,9 +491,11 @@ def sign_new_user(user_data, date):
             break
         else:
             j+=1
-
         
-
+        if j >= 5:
+            messagebox.showinfo("error","엑셀파일의 이용자특성 및 구분 확인")
+            break
+            
     #user_type2
     if j == 0:
         pyautogui.click(x=722, y=459, clicks=1, button='left')
