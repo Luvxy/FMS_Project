@@ -1,17 +1,22 @@
 # button_functions.py
 import json
 import pandas as pd
+import FMS
+from easydict import EasyDict
 from tkinter import filedialog as fd
 
 def read_config():
-    # Read the configuration from the JSON file
-    with open('config.json', 'r') as config_file:
-        config = json.load(config_file)
-    return config
+    try:
+        with open("config.json", 'r', encoding="utf-8") as config_file:
+            config = json.load(config_file)
+        return config
+    except FileNotFoundError:
+        print("Configuration file not found. Creating a new one.")
+        return {}
 
 def write_config(config):
-    with open('config.json', 'w') as config_file:
-        json.dump(config, 'config.json', indent=4)
+    with open('config.json', 'w', encoding='utf-8') as config_file:
+        json.dump(config, config_file, indent=4, ensure_ascii=False)
 
 def on_button1_clicked(): # 다음
     print("Button 1 clicked")
@@ -37,6 +42,9 @@ def on_button3_clicked(): # 파일선택
     path = filename
     config_r['path'] = path
     
+    print(config_r['path'])
+    
     write_config(config_r)
+    return path
 
 # Add more functions for other buttons if needed

@@ -16,7 +16,7 @@ def write_config(file_path, config):
         json.dump(config, config_file, indent=4)
 
 # File path for the configuration file
-config_file_path = 'config.json'
+config_file_path = 'config1.json'
 
 # Read the configuration from the file
 config = read_config(config_file_path)
