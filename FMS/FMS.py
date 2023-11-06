@@ -205,8 +205,8 @@ def restart_sign_new_user():
                     pixel_color = screenshot.getpixel((1109, 218))
                     if pixel_color == green_color:
                         # Green color found, click a button (you can modify this action)
-                        pyautogui.click(1109, 218)
-                        print("Green color found at ({}, {})".format(1109, 218))
+                        pyautogui.click(1111, 327)
+                        print("Green color found at ({}, {})".format(1111, 327))
                         green_found = True
                         is_match = True
                         break  # Exit the inner loop
@@ -256,7 +256,7 @@ def restart_sign_new_user():
                         "한부모가정","기타","청장년 1인가구","미혼모부가구",
                         "부부중심가구","노인부부가구","새터민가구","공통체가구"]
         
-        user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자",""]
+        user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락"]
 
         #user_type1
         j = 0
@@ -478,7 +478,7 @@ def sign_new_user(user_data, date):
                     "한부모가정","기타","청장년 1인가구","미혼모부가구",
                     "부부중심가구","노인부부가구","새터민가구","공통체가구"]
     
-    user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자",""]
+    user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락"]
 
     #user_type1
     j = 0
