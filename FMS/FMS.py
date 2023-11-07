@@ -51,13 +51,13 @@ def log_user(message):
     num_range = ['4','5','6','7','9','10','13']
     print_data = message.iloc[active_num]
     #4,5,6,7,9,10,11,13
-    log_text.insert(tk.END,'이       름: '+message.iloc[active_num,4]+'\n\n')
-    log_text.insert(tk.END,'주 민 번 호: '+message.iloc[active_num,5]+'\n\n')
-    log_text.insert(tk.END,'주       소: '+message.iloc[active_num,6]+'\n\n')
-    log_text.insert(tk.END,'전 화 번 호: '+message.iloc[active_num,7]+'\n\n')
-    log_text.insert(tk.END,'이용자 구분: '+message.iloc[active_num,9]+'\n\n')
-    log_text.insert(tk.END,'이용자 특성: '+message.iloc[active_num,10]+'\n\n')
-    log_text.insert(tk.END,'신 청 구 분: '+message.iloc[active_num,13]+'\n\n')
+    log_text.insert(tk.END,'이       름: '+str(message.iloc[active_num,4])+'\n\n')
+    log_text.insert(tk.END,'주 민 번 호: '+str(message.iloc[active_num,5])+'\n\n')
+    log_text.insert(tk.END,'주       소: '+str(message.iloc[active_num,6])+'\n\n')
+    log_text.insert(tk.END,'전 화 번 호: '+str(message.iloc[active_num,7])+'\n\n')
+    log_text.insert(tk.END,'이용자 구분: '+str(message.iloc[active_num,9])+'\n\n')
+    log_text.insert(tk.END,'이용자 특성: '+str(message.iloc[active_num,10])+'\n\n')
+    log_text.insert(tk.END,'신 청 구 분: '+str(message.iloc[active_num,13])+'\n\n')
         
 
 #log
@@ -207,12 +207,15 @@ def restart_sign_new_user():
                     break  # Exit the outer loop
 
             # Check if 3 seconds have passed
-            if time.time() - start_time >= 2:
+            if time.time() - start_time >= 3:
                 break
 
         if is_match:
             time.sleep(0.5)
             pyautogui.press("enter")
+        
+        pyautogui.press("enter")
+        pyautogui.press("esc")
         
         # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
         pyautogui.moveTo(456,340)
@@ -450,7 +453,7 @@ def sign_new_user(user_data, date):
                 break  # Exit the outer loop
 
         # Check if 3 seconds have passed
-        if time.time() - start_time >= 2:
+        if time.time() - start_time >= 1:
             break
 
     if is_match:

@@ -14,6 +14,7 @@ from PyQt5.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QRadialGradient)
 from PyQt5.QtWidgets import *
 import sys
+from button_functions import *
 
 
 class Ui_MainWindow(object):
@@ -46,22 +47,22 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QPushButton(self.tab)
         self.pushButton_3.setObjectName(u"pushButton_3")
         self.pushButton_3.setGeometry(QRect(10, 10, 75, 23))
-        # 파일정보 출력
+        # 이용자정보 출력
         self.listView = QListView(self.tab)
         self.listView.setObjectName(u"listView")
         self.listView.setGeometry(QRect(10, 100, 361, 251))
-        # 모델을 생성하고 데이터를 설정
-        model = QStringListModel(listbox_1)
-        # 리스트뷰에 모델 설정
-        self.listView.setModel(model)
-        # 날짜
+        # 날짜선택
         self.dateEdit = QDateEdit(self.tab)
         self.dateEdit.setObjectName(u"dateEdit")
         self.dateEdit.setGeometry(QRect(90, 10, 110, 22))
-        # 이용자정보 출력
+        # 파일 이름 출력
         self.listView_2 = QListView(self.tab)
         self.listView_2.setObjectName(u"listView_2")
         self.listView_2.setGeometry(QRect(10, 40, 361, 21))
+        #파일 정보
+        self.textEdit = QTextEdit(self.tab)
+        self.textEdit.setObjectName(u"textEdit")
+        self.textEdit.setGeometry(QRect(10, 40, 361, 21))
         # 시작
         self.pushButton_4 = QPushButton(self.tab)
         self.pushButton_4.setObjectName(u"pushButton_4")
@@ -80,7 +81,7 @@ class Ui_MainWindow(object):
         self.tab_2 = QWidget()
         
         ################################################################################
-        # 접수등록 tab
+        # 제공등록 tab
         ################################################################################
         self.tab_2.setObjectName(u"tab_2")
         self.pushButton_5 = QPushButton(self.tab_2)
@@ -115,6 +116,9 @@ class Ui_MainWindow(object):
         self.pushButton_8.setObjectName(u"pushButton_8")
         self.pushButton_8.setGeometry(QRect(10, 70, 75, 23))
         self.tabWidget.addTab(self.tab_2, "")
+        ################################################################################
+        # 접수등록 tab
+        ################################################################################
         self.tab_3 = QWidget()
         self.tab_3.setObjectName(u"tab_3")
         self.dateEdit_3 = QDateEdit(self.tab_3)
@@ -208,6 +212,35 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"else", None))
         self.menuFNS.setTitle(QCoreApplication.translate("MainWindow", u"FNS", None))
     # retranslateUi
+    
+    def setText_listview_1(self, text):
+        # 리스트뷰에 표시할 데이터
+        list_text_one = ''
+        # 모델을 생성하고 데이터를 설정
+        model = QStringListModel(list_text_one)
+        # 리스트뷰에 모델 설정
+        self.listView.setModel(model)
+        
+    def setText_listview_2(self, text):
+        # 리스트뷰에 표시할 데이터
+        list_text_one = str(text).split('/')
+        # 모델을 생성하고 데이터를 설정
+        model = QStringListModel(list_text_one)
+        # 리스트뷰에 모델 설정
+        self.listView_2.setModel(model)
+        
+    def setText_listview_3(self, text):
+        # 리스트뷰에 표시할 데이터
+        list_text_one = ''
+        # 모델을 생성하고 데이터를 설정
+        model = QStringListModel(list_text_one)
+        # 리스트뷰에 모델 설정
+        self.listView_3.setModel(model)
+        
+    def setText_listview_4(self, text):
+        
+        # 리스트뷰에 모델 설정
+        self.listView_4.setModel(model)
 
 
 class MyMainWindow(QMainWindow):
@@ -217,10 +250,18 @@ class MyMainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # Connect button clicks to functions
-        self.ui.pushButton.clicked.connect(on_button1_clicked) # 
-        self.ui.pushButton_2.clicked.connect(on_button2_clicked) #
-        list_text_one = self.ui.pushButton_3.clicked.connect(on_button3_clicked) # 파일선택
-        self.ui.listbox_1 = list_text_one
+        # tab1
+        self.ui.pushButton.clicked.connect(on_button1_clicked) # 이전
+        self.ui.pushButton_2.clicked.connect(on_button2_clicked) # 다음
+        self.ui.pushButton_3.clicked.connect(on_button3_clicked) # 파일선택
+        # tab2
+        self.ui.pushButton_5.clicked.connect(on_button5_clicked) # 파일선택
+        self.ui.pushButton_6.clicked.connect(on_button6_clicked) # 시작
+        self.ui.pushButton_7.clicked.connect(on_button7_clicked) # 다음
+        self.ui.pushButton_8.clicked.connect(on_button8_clicked) # 이전
+        
+    def get_main_window(self):
+        return self.ui
 
 def main():
     app = QApplication(sys.argv)

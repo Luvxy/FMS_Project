@@ -1,10 +1,13 @@
 # button_functions.py
 import json
 import pandas as pd
-import FMS
-from easydict import EasyDict
 from tkinter import filedialog as fd
+from ui_FMS import *
 
+
+################################################################################
+# 이용자등록 tab
+################################################################################
 def read_config():
     try:
         with open("config.json", 'r', encoding="utf-8") as config_file:
@@ -40,11 +43,64 @@ def on_button3_clicked(): # 파일선택
         filetypes=filetypes)
 
     path = filename
-    config_r['path'] = path
+    config_r['user_path'] = path #void return {= 짱구 ☆  ^0^ ☆ 짱구 =}
     
-    print(config_r['path'])
+    name = path.split('/')[len(path.split('/'))-1]
+    print(name)
     
+    print(config_r['user_path'])
     write_config(config_r)
-    return path
 
-# Add more functions for other buttons if needed
+def on_button4_clicked():
+    print("Button 4 clicked")
+    
+################################################################################
+# 접수등록 tab
+################################################################################
+def on_button5_clicked(): # 파일선택
+    print("Button 5 clicked")
+    config_r = read_config()
+    path = ''
+
+    filetypes = (
+        ('excel files', '*.xlsx'),
+        ('All files', '*.*')
+    )
+
+    filename = fd.askopenfilename(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+
+    path = filename
+    config_r['item_path'] = path
+    
+    name = path.split('/')[len(path.split('/'))-1]
+    print(name)
+    
+    print(config_r['item_path'])
+    write_config(config_r)
+
+def on_button6_clicked(): # 시작
+    print("Button 6 clicked")
+    # load config
+    config_r = read_config()
+    # access excel file
+    path = config_r['item_path']
+    df = pd.read_excel(path)
+    print(df.lioc[0])
+    # start macro
+    # 1. 날짜변경
+    # 2. 물품검색
+    # 3. 물품선택
+    # 4. 이용자 검색
+    # 5. 수량변경
+    # 6. 저장
+    
+    
+    
+def on_button7_clicked(): # 다음
+    print("Button 7 clicked")
+    
+def on_button8_clicked(): # 이전
+    print("Button 8 clicked")
