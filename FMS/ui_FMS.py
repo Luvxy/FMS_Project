@@ -8,7 +8,7 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 from PyQt5.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
-    QRect, QSize, QUrl, Qt, QStringListModel)
+    QRect, QSize, QUrl, Qt, QStringListModel,QDate)
 from PyQt5.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QFontDatabase, QIcon, QLinearGradient, QPalette, QPainter, QPixmap,
     QRadialGradient)
@@ -123,6 +123,7 @@ class Ui_MainWindow(object):
         self.tab_3.setObjectName(u"tab_3")
         self.dateEdit_3 = QDateEdit(self.tab_3)
         self.dateEdit_3.setObjectName(u"dateEdit_3")
+        self.dateEdit_3.setMinimumDate(QDate(1900, 1, 1))
         self.dateEdit_3.setGeometry(QRect(10, 10, 110, 22))
         self.checkBox_3 = QCheckBox(self.tab_3)
         self.checkBox_3.setObjectName(u"checkBox_3")
@@ -141,6 +142,7 @@ class Ui_MainWindow(object):
         self.line.setGeometry(QRect(10, 60, 351, 16))
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
+        
         self.widget = QWidget(self.tab_3)
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(10, 70, 351, 21))
@@ -150,6 +152,17 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.widget)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(10, 0, 131, 21))
+        
+        self.widget_2 = QWidget(self.tab_3)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setGeometry(QRect(10, 90, 351, 21))
+        self.spinBox_2 = QSpinBox(self.widget_2)
+        self.spinBox_2.setObjectName(u"spinBox_2")
+        self.spinBox_2.setGeometry(QRect(310, 0, 42, 22))
+        self.label_2 = QLabel(self.widget_2)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setGeometry(QRect(10, 0, 131, 21))
+        
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
@@ -200,48 +213,30 @@ class Ui_MainWindow(object):
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"\uc2dc\uc791", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"\ub2e4\uc74c", None))
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"\uc774\uc804", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"접수등록", None))
+        
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"제공등록", None))
         self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"\uc790\ub3d9\ub4f1\ub85d", None))
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"\uc2dc\uc791", None))
         self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"\ucd94\uac00", None))
         self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"\uc218\uc815", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\ub9e4\uc7a5 \uc774\ub984", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"제공등록", None))
+    
+        self.label.setText(QCoreApplication.translate("MainWindow", u"매장이름", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"매장이름2", None))
+        
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"접수등록", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"접수수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"제공수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"else", None))
         self.menuFNS.setTitle(QCoreApplication.translate("MainWindow", u"FNS", None))
     # retranslateUi
     
-    def setText_listview_1(self, text):
-        # 리스트뷰에 표시할 데이터
-        list_text_one = ''
-        # 모델을 생성하고 데이터를 설정
-        model = QStringListModel(list_text_one)
-        # 리스트뷰에 모델 설정
-        self.listView.setModel(model)
-        
-    def setText_listview_2(self, text):
-        # 리스트뷰에 표시할 데이터
-        list_text_one = str(text).split('/')
-        # 모델을 생성하고 데이터를 설정
-        model = QStringListModel(list_text_one)
-        # 리스트뷰에 모델 설정
-        self.listView_2.setModel(model)
-        
-    def setText_listview_3(self, text):
-        # 리스트뷰에 표시할 데이터
-        list_text_one = ''
-        # 모델을 생성하고 데이터를 설정
-        model = QStringListModel(list_text_one)
-        # 리스트뷰에 모델 설정
-        self.listView_3.setModel(model)
-        
-    def setText_listview_4(self, text):
-        
-        # 리스트뷰에 모델 설정
-        self.listView_4.setModel(model)
-
+    # def setText_listview_1(self, text):
+    #     # 리스트뷰에 표시할 데이터
+    #     list_text_one = ''
+    #     # 모델을 생성하고 데이터를 설정
+    #     model = QStringListModel(list_text_one)
+    #     # 리스트뷰에 모델 설정
+    #     self.listView.setModel(model)
 
 class MyMainWindow(QMainWindow):
     def __init__(self):
@@ -259,6 +254,8 @@ class MyMainWindow(QMainWindow):
         self.ui.pushButton_6.clicked.connect(on_button6_clicked) # 시작
         self.ui.pushButton_7.clicked.connect(on_button7_clicked) # 다음
         self.ui.pushButton_8.clicked.connect(on_button8_clicked) # 이전
+        # tab3
+        self.ui.pushButton_9.clicked.connect(lambda idx:on_button9_clicked(self.ui.dateEdit_3.date())) # 시작
         
     def get_main_window(self):
         return self.ui
