@@ -316,9 +316,11 @@ def restart_sign_new_user():
         time.sleep(0.5)
 
         # 지원기간 선택(mouse_pos1 = 1035, 587)
-        pyautogui.click(x=1008, y=590, clicks=1, button='left')
+        pyautogui.click(x=1065, y=610, clicks=1, button='left')
         for i in range(2):
             pyautogui.press('up')
+        pyautogui.press('enter')
+        time.sleep(0.5)
         pyautogui.click(x=1035, y=587, clicks=1, button='left')
         for i in range(13):
             pyautogui.press('up')
@@ -350,7 +352,7 @@ def restart_sign_new_user():
             messagebox.showinfo("안내","이용자 정보를 저장합니다.'")
             pyautogui.click(1745, 294)
             pyautogui.press('enter')
-            time.sleep(2)
+            time.sleep(3)
             pyautogui.press('enter')
             pyautogui.click(1808,289)
             data_print(data,1, type_num)
@@ -453,7 +455,7 @@ def sign_new_user(user_data, date):
                 break  # Exit the outer loop
 
         # Check if 3 seconds have passed
-        if time.time() - start_time >= 1:
+        if time.time() - start_time >= 2:
             break
 
     if is_match:
