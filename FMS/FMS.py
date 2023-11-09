@@ -40,7 +40,8 @@ active_num = 2
 path = "out.xlsx"
 do_list=["이용자 등록","접수등록","제공등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
-date = datetime.date.today()
+date_to = datetime.date.today()
+date = str(date_to.month)+"월"+str(date_to.day)+"일"
 data = ''
 type_num = 1
 
@@ -78,7 +79,14 @@ def data_print(_data, num, type_num):
         else:
             log(str(_data.iloc[active_num,type_num]))
     except:
-        log("데이터가 없습니다.")
+        log("ERROR: 파일의 데이터 형식이 알맞지 않습니다."+"\n"+
+            "다음 내용을 확인해주세요."+"\n"+
+            "1. 이름에 공백 혹은 다른 문자가 들어있지 않은지 확인해주세요."+"\n"+
+            "2. 주민등록번호가 -로 구분되어 있는지 확인해주세요."+"\n"+
+            "3. 주소가 정확한지 확인해주세요."+"\n"+
+            "4. 전화번호가 -로 구분되어 있는지 확인해주세요."+"\n"+
+            "5. 이용자 구분이 정확한지 확인해주세요."+"\n"+
+            "6. 이용자 특성이 정확한지 확인해주세요."+"\n")
         traceback.print_exc()   
     
 #엑셀 path select
@@ -186,7 +194,7 @@ def restart_sign_new_user():
     if is_data:
         time.sleep(0.5)
         start_time = time.time()
-        green_color = (51, 96, 52)  # (R, G, B) values for pure green
+        green_color = (55, 105, 57)  # (R, G, B) values for pure green
         while True:
             # Take a screenshot of the entire screen
             screenshot = pyautogui.screenshot()
@@ -194,33 +202,26 @@ def restart_sign_new_user():
             # Search for the green color in the screenshot
             for x in range(screenshot.width):
                 for y in range(screenshot.height):
-                    pixel_color = screenshot.getpixel((1109, 218))
+                    pixel_color = screenshot.getpixel((1111, 331))
                     if pixel_color == green_color:
                         # Green color found, click a button (you can modify this action)
-                        pyautogui.click(1111, 327)
                         print("Green color found at ({}, {})".format(1111, 327))
                         green_found = True
-                        is_match = True
                         break  # Exit the inner loop
 
                 if green_found:
                     break  # Exit the outer loop
-
+            
+            if green_found:
+                break
+            
             # Check if 3 seconds have passed
             if time.time() - start_time >= 3:
                 break
 
-        if is_match:
+        if green_found:
             time.sleep(0.5)
             pyautogui.press("enter")
-        
-        pyautogui.press("enter")
-        pyautogui.press("esc")
-        
-        # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
-        pyautogui.moveTo(456,340)
-        pyautogui.click(clicks=1, button='left')
-        time.sleep(0.5)
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=408, y=432, clicks=1, button='left')

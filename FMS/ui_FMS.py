@@ -223,7 +223,7 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"매장이름", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"매장이름2", None))
         
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"접수등록", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"빵", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"접수수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"제공수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"else", None))
@@ -256,6 +256,7 @@ class MyMainWindow(QMainWindow):
         self.ui.pushButton_8.clicked.connect(on_button8_clicked) # 이전
         # tab3
         self.ui.pushButton_9.clicked.connect(lambda idx:on_button9_clicked(self.ui.dateEdit_3.date())) # 시작
+        self.ui.pushButton_12.clicked.connect(on_button12_clicked) # 파일선택
         
     def get_main_window(self):
         return self.ui
