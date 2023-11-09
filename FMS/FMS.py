@@ -221,7 +221,9 @@ def restart_sign_new_user():
 
         if green_found:
             time.sleep(0.5)
-            pyautogui.press("enter")
+            pyautogui.press("esc")
+        
+        pyautogui.press("esc")
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=408, y=432, clicks=1, button='left')
@@ -252,7 +254,7 @@ def restart_sign_new_user():
                         "한부모가정","기타","청장년 1인가구","미혼모부가구",
                         "부부중심가구","노인부부가구","새터민가구","공통체가구"]
         
-        user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락"]
+        user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락", "실직 및 휴폐업"]
 
         #user_type1
         j = 0
@@ -267,6 +269,14 @@ def restart_sign_new_user():
                 break
             else:
                 j+=1
+                if j == 5:
+                    pyautogui.click(x=459, y=460, clicks=1, button='left')
+                    for z in range(3):
+                        pyautogui.press("up")
+                    for k in range(0):
+                        pyautogui.press("down")
+                    pyautogui.press("enter")
+                    break
 
             
 
@@ -461,7 +471,7 @@ def sign_new_user(user_data, date):
 
     if is_match:
         time.sleep(1)
-        pyautogui.press('enter')
+        pyautogui.press('esc')
         restart_sign_new_user()
         return
     
@@ -476,7 +486,7 @@ def sign_new_user(user_data, date):
                     "한부모가정","기타","청장년 1인가구","미혼모부가구",
                     "부부중심가구","노인부부가구","새터민가구","공통체가구"]
     
-    user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락"]
+    user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층","소득감소자","복지급여 탈락","실직 및 휴폐업"]
 
     #user_type1
     j = 0
@@ -489,6 +499,14 @@ def sign_new_user(user_data, date):
             break
         else:
             j+=1
+            if j == 5:
+                    pyautogui.click(x=459, y=460, clicks=1, button='left')
+                    for z in range(3):
+                        pyautogui.press("up")
+                    for k in range(0):
+                        pyautogui.press("down")
+                    pyautogui.press("enter")
+                    break
         
         if j >= 5:
             messagebox.showinfo("error","엑셀파일의 이용자특성 및 구분 확인")

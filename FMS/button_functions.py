@@ -209,6 +209,7 @@ def on_button9_clicked(date): # 시작
         pc.copy(df.iloc[active_num][0])
     except:
         print("기관이 없습니다.")
+        return
     pag.hotkey('ctrl', 'v')
     pag.press('f2')
     # 기관 선택 (x=962, y=473)
