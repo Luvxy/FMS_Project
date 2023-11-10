@@ -142,7 +142,7 @@ def on_button9_clicked(date): # 시작
     len_df = len(df)
     active_num = 1
     zero_num = 0
-    count = 0
+    count = 1
     
     # active_num = 선택된 기관, zero_num = 기관 수, count = 빵 등록 수
     for i in range(len_df):
@@ -151,6 +151,8 @@ def on_button9_clicked(date): # 시작
         else:
             zero_num += 1
             break
+        if str(df.iloc[i][1]).find('c'):
+            cake = i
     # 1. 빵 등록
     # 오늘 날짜 불러오기
     # 제공등록 클릭 (mouse point x=349, y=212)

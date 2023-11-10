@@ -86,7 +86,8 @@ def data_print(_data, num, type_num):
             "3. 주소가 정확한지 확인해주세요."+"\n"+
             "4. 전화번호가 -로 구분되어 있는지 확인해주세요."+"\n"+
             "5. 이용자 구분이 정확한지 확인해주세요."+"\n"+
-            "6. 이용자 특성이 정확한지 확인해주세요."+"\n")
+            "6. 이용자 특성이 정확한지 확인해주세요."+"\n"+
+            "7. 데이터가 없습니다.")
         traceback.print_exc()   
     
 #엑셀 path select
@@ -118,7 +119,10 @@ def get_data_from_excel(_path, date):
     global active_num
     
     # 엑셀 파일을 데이터프레임으로 읽어옵니다.
-    df = pd.read_excel(_path, sheet_name=str(date))
+    try:
+        df = pd.read_excel(_path, sheet_name=str(date))
+    except:
+        messagebox.showinfo("error","날짜를 확인해주세요. 엑셀의 시트 이름과 날짜를 일치시켜주세요.")
 
     # data return
     return df
@@ -499,17 +503,15 @@ def sign_new_user(user_data, date):
             break
         else:
             j+=1
-            if j == 5:
-                    pyautogui.click(x=459, y=460, clicks=1, button='left')
-                    for z in range(3):
-                        pyautogui.press("up")
-                    for k in range(0):
-                        pyautogui.press("down")
-                    pyautogui.press("enter")
-                    break
-        
-        if j >= 5:
-            messagebox.showinfo("error","엑셀파일의 이용자특성 및 구분 확인")
+            pyautogui.click(x=459, y=460, clicks=1, button='left')
+            for z in range(3):
+                pyautogui.press("up")
+            for k in range(0):
+                pyautogui.press("down")
+            pyautogui.press("enter")
+            if j >= 5:
+                messagebox.showinfo("error","엑셀파일의 이용자특성 및 구분 확인")
+                break
             break
             
     #user_type2
