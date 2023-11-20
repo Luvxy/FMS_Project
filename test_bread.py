@@ -5,9 +5,9 @@ import pyautogui as pag
 import pyperclip as pc
 import time
 
-active_num = 0 # 선택된 기관
+active_num = -1 # 선택된 기관
 zero_num = 1 # 기관 수
-count = 1 # 빵집 수
+count = 0 # 빵집 수
 is_cake = False # 빵집 여부
 
 def read_config():
@@ -26,13 +26,14 @@ def on_button9_clicked(): # 시작
     sh_name = input("시트 이름을 입력하세요: ")
     df = pd.read_excel(config_r["item_path"], sheet_name=sh_name)
     df = df.fillna('')
+    print(df.iloc[-1,1])
     print(df)
     len_df = len(df)
     
     print(len_df)
     
     # active_num = 선택된 기관, zero_num = 기관 수, count = 빵 등록 수
-    for i in range(5):
+    for i in range(len_df):
         data = df.iloc[active_num+i]
         print("검사중..."+str(data.iloc[1]))
         if str(data.iloc[1]).find('c') != -1:
@@ -42,11 +43,12 @@ def on_button9_clicked(): # 시작
             break
         elif data.iloc[0] != '':
             count += 1
-            print("중지2..."+str(count))
+            print("중지2...\n"+str(count))
             print(data.iloc[0])
             break
         else:
             count += 1
+            active_num = count
     # 1. 빵 등록
     # 오늘 날짜 불러오기
     # 제공등록 클릭 (mouse point x=349, y=212)
