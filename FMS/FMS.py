@@ -198,7 +198,7 @@ def restart_sign_new_user():
     if is_data:
         time.sleep(0.5)
         start_time = time.time()
-        green_color = (55, 105, 57)  # (R, G, B) values for pure green
+        green_color = (27, 119, 228)  # (R, G, B) values for pure green
         while True:
             # Take a screenshot of the entire screen
             screenshot = pyautogui.screenshot()
@@ -206,10 +206,10 @@ def restart_sign_new_user():
             # Search for the green color in the screenshot
             for x in range(screenshot.width):
                 for y in range(screenshot.height):
-                    pixel_color = screenshot.getpixel((1111, 331))
+                    pixel_color = screenshot.getpixel((1125, 307))
                     if pixel_color == green_color:
                         # Green color found, click a button (you can modify this action)
-                        print("Green color found at ({}, {})".format(1111, 327))
+                        print("Green color found at ({}, {})".format(1125, 307))
                         green_found = True
                         break  # Exit the inner loop
 
@@ -411,12 +411,12 @@ def sign_new_user(user_data, date):
 
     # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
     pyautogui.hotkey('alt','tab')
-    pyautogui.moveTo(456,340)
+    pyautogui.moveTo(459,333)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.5)
 
     # 이용자명 입력(mouse_pos = 408, 432)
-    pyautogui.click(x=408, y=432, clicks=1, button='left')
+    pyautogui.click(x=461, y=420, clicks=1, button='left')
     is_spe = True
     user_name = str(user_data.iloc[num, 4])
     try:
@@ -436,7 +436,7 @@ def sign_new_user(user_data, date):
     
     time.sleep(0.5)
     #주민등록 번호 입력(mouse_pos1 = 665, 434)
-    pyautogui.click(x=665, y=434, clicks=1, button='left')
+    pyautogui.click(x=665, y=419, clicks=1, button='left')
     user_num = str(user_data.iloc[num, 5]).split('-')
     pyperclip.copy(user_num[0])
     pyautogui.hotkey('ctrl', 'v')
@@ -447,7 +447,7 @@ def sign_new_user(user_data, date):
     is_match = False
     #Point(x=1144, y=212)
     start_time = time.time()
-    green_color = (51, 96, 52)  # (R, G, B) values for pure green
+    green_color = (27, 119, 228)  # (R, G, B) values for pure green
     while True:
         # Take a screenshot of the entire screen
         screenshot = pyautogui.screenshot()
@@ -457,11 +457,11 @@ def sign_new_user(user_data, date):
         # Search for the green color in the screenshot
         for x in range(screenshot.width):
             for y in range(screenshot.height):
-                pixel_color = screenshot.getpixel((1109, 218))
+                pixel_color = screenshot.getpixel((1145, 193))
                 if pixel_color == green_color:
                     # Green color found, click a button (you can modify this action)
-                    pyautogui.click(1109, 218)
-                    print("Green color found at ({}, {})".format(1109, 218))
+                    pyautogui.click(1126, 190)
+                    print("Green color found at ({}, {})".format(1145, 193))
                     green_found = True
                     is_match = True
                     break  # Exit the inner loop
@@ -496,14 +496,14 @@ def sign_new_user(user_data, date):
     j = 0
     for i in user_type_list:
         if i == user_type1[1]:
-            pyautogui.click(x=459, y=460, clicks=1, button='left')
+            pyautogui.click(x=459, y=447, clicks=1, button='left')
             for k in range(j):
                 pyautogui.press("down")
             pyautogui.press("enter")
             break
         else:
             j+=1
-            pyautogui.click(x=459, y=460, clicks=1, button='left')
+            pyautogui.click(x=459, y=447, clicks=1, button='left')
             for z in range(3):
                 pyautogui.press("up")
             for k in range(0):
@@ -516,21 +516,23 @@ def sign_new_user(user_data, date):
             
     #user_type2
     if j == 0:
-        pyautogui.click(x=722, y=459, clicks=1, button='left')
+        pyautogui.click(x=722, y=447, clicks=1, button='left')
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("enter")
     else:
-        pyautogui.click(x=722, y=459, clicks=1, button='left')
+        pyautogui.click(x=722, y=447, clicks=1, button='left')
 
     #user_type3
     j = 0
     for i in type_list:
         if i == user_type3[1]:
-            pyautogui.click(x=1050, y=458, clicks=1, button='left')
+            print(user_type3[1])
+            pyautogui.click(x=1100, y=443, clicks=1, button='left')
             for k in range(j):
                 pyautogui.press("down")
+                num_direction = k
             pyautogui.press("enter")
             break
         j += 1
@@ -538,21 +540,21 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
     
     # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-    pyautogui.click(x=427, y=523, clicks=1, button='left')
+    pyautogui.click(x=427, y=518, clicks=1, button='left')
     time.sleep(1)
-    pyautogui.click(x=861, y=430, clicks=1, button='left')
+    pyautogui.click(x=861, y=437, clicks=1, button='left')
     pyperclip.copy(user_data.iloc[num, 6])
     pyautogui.hotkey('ctrl', 'v')
-    pyautogui.click(x=1132, y=442, clicks=1, button='left')
+    pyautogui.click(x=1132, y=437, clicks=1, button='left')
     time.sleep(1)
-    pyautogui.click(x=948, y=521, clicks=2, button='left')
+    pyautogui.click(x=948, y=516, clicks=2, button='left')
     time.sleep(1)
 
     # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-    pyautogui.click(x=400, y=554, clicks=1, button='left')
-    pyautogui.click(x=384, y=603, clicks=1, button='left')
+    pyautogui.click(x=400, y=543, clicks=1, button='left')
+    pyautogui.click(x=384, y=591, clicks=1, button='left')
     user_num = str(user_data.iloc[num, 7]).split('-')
-    pyautogui.click(x=437, y=556, clicks=1, button='left')
+    pyautogui.click(x=437, y=543, clicks=1, button='left')
     pyperclip.copy(user_num[1])
     pyautogui.hotkey('ctrl', 'v')
     pyperclip.copy(user_num[2])
@@ -560,14 +562,14 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
 
     # 지원기간 선택(mouse_pos1 = 1035, 587)
-    pyautogui.click(x=1035, y=587, clicks=1, button='left')
+    pyautogui.click(x=1035, y=576, clicks=1, button='left')
     for i in range(12):
         pyautogui.press('down')
     pyautogui.press('enter')
     time.sleep(0.5)
 
     # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-    pyautogui.click(x=532, y=728, clicks=2, button='left')
+    pyautogui.click(x=532, y=718, clicks=2, button='left')
     time.sleep(0.5)
 
     if is_spe:

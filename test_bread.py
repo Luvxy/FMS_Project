@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 from tkinter import filedialog as fd
-import pyautogui as pag
+import pyautogui as pa
 import pyperclip as pc
 import time
 from tkinter import *
@@ -28,13 +28,15 @@ while(True):
     data = df.iloc[row_num]
     print("기관 명:"+ str(data.iloc[0]))
     
+    pa.hotkey('alt', 'tab')
+    
     for i in range(int(num)):
         print(i)
         data = df.iloc[row_num+i]
         # print(data)
         print("기관명: "+str(data.iloc[1]))
-        print("만약 c가 있으면 케이크로 등록")
-        if True:
+        print("만약 20000원 이면 케이크로 등록")
+        if data.iloc[3] == 20000:
             print("케이크 등록")
         else:
             print("빵 등록")
