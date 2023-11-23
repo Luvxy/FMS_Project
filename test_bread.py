@@ -9,14 +9,11 @@ from tkinter import *
 print("파일 불러오기")
 sh_name = input('시트 이름: ')
 try:
-    df = pd.read_excel("H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구 (정리 필요 !!!)/아동센터 목록(+배분실적).xlsx", sheet_name=sh_name)
+    df = pd.read_excel("test.xlsx", sheet_name=sh_name)
     print(df)
 except:
     print("시트 이름이 잘못되었습니다.")
     exit()
-
-
-
 
 while(True):
     num = input('기관 수: ')
@@ -76,7 +73,7 @@ while(True):
             pc.copy(str(int(data.iloc[2])))
             pa.hotkey('ctrl', 'v')
             pa.press('tab')
-            pa.press('tab')
+            pa.press('tab') 
             pa.press('tab')
             pa.press('tab')
             pc.copy(str(data.iloc[4]))
@@ -152,4 +149,5 @@ while(True):
     if end == 'y':
         break
     else:
+        print(df)
         continue

@@ -117,17 +117,22 @@ class Ui_MainWindow(object):
         self.pushButton_8.setGeometry(QRect(10, 70, 75, 23))
         self.tabWidget.addTab(self.tab_2, "")
         ################################################################################
-        # 접수등록 tab
+        # 빵 tab
         ################################################################################
         self.tab_3 = QWidget()
         self.tab_3.setObjectName(u"tab_3")
         self.dateEdit_3 = QDateEdit(self.tab_3)
         self.dateEdit_3.setObjectName(u"dateEdit_3")
-        self.dateEdit_3.setMinimumDate(QDate(1900, 1, 1))
+        self.dateEdit_3.setMinimumDate(QDate(2023, 11, 20))
         self.dateEdit_3.setGeometry(QRect(10, 10, 110, 22))
         self.checkBox_3 = QCheckBox(self.tab_3)
         self.checkBox_3.setObjectName(u"checkBox_3")
         self.checkBox_3.setGeometry(QRect(210, 40, 81, 21))
+        # input
+        self.line_edit = QLineEdit(self.tab_3)
+        self.line_edit.setObjectName(u"line_edit")
+        self.line_edit.setGeometry(QRect(10, 35, 110, 22))
+        # 시작
         self.pushButton_9 = QPushButton(self.tab_3)
         self.pushButton_9.setObjectName(u"pushButton_9")
         self.pushButton_9.setGeometry(QRect(280, 40, 75, 23))
@@ -142,27 +147,7 @@ class Ui_MainWindow(object):
         self.line.setGeometry(QRect(10, 60, 351, 16))
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
-        
-        self.widget = QWidget(self.tab_3)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(10, 70, 351, 21))
-        self.spinBox = QSpinBox(self.widget)
-        self.spinBox.setObjectName(u"spinBox")
-        self.spinBox.setGeometry(QRect(310, 0, 42, 22))
-        self.label = QLabel(self.widget)
-        self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(10, 0, 131, 21))
-        
-        self.widget_2 = QWidget(self.tab_3)
-        self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setGeometry(QRect(10, 90, 351, 21))
-        self.spinBox_2 = QSpinBox(self.widget_2)
-        self.spinBox_2.setObjectName(u"spinBox_2")
-        self.spinBox_2.setGeometry(QRect(310, 0, 42, 22))
-        self.label_2 = QLabel(self.widget_2)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(10, 0, 131, 21))
-        
+
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
@@ -209,21 +194,19 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"\uc218\ub7c9\uc801\uc740\uc21c", None))
         self.comboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"\uc218\ub7c9\ub9ce\uc740\uc21c", None))
 
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"제공등록", None))
         self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"\uc790\ub3d9\ub4f1\ub85d", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"\uc2dc\uc791", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"\ub2e4\uc74c", None))
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"\uc774\uc804", None))
         
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"제공등록", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"빵", None))
         self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"\uc790\ub3d9\ub4f1\ub85d", None))
         self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"\uc2dc\uc791", None))
         self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"\ucd94\uac00", None))
         self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"\uc218\uc815", None))
-    
-        self.label.setText(QCoreApplication.translate("MainWindow", u"매장이름", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"매장이름2", None))
+        self.line_edit.setText(QCoreApplication.translate("MainWindow", u"label", None))
         
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"빵", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"접수수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"제공수정", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"else", None))

@@ -6,6 +6,7 @@ import pyautogui
 import time
 import keyboard
 
+# 오뚜기 테스트 
 
 pyautogui.keyDown('alt')
 pyautogui.press('tab')
