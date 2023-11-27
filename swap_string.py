@@ -6,7 +6,7 @@ bread_name_list = [
     '쿱스영등', '초코', '파리고래등', '파리이편한', '그랜드',
     '파리배산', '파리동산', '쿱스어양', '뚜레원광', '파리부송제일',
     '크리영등', '파리부송', '뚜레동산', '파리동산', '파리동산',
-    '브레드팜', '파리원광', '홍윤', '하나인화', '온스', '파리동산',
+    '브레드팜', '파리원광', '홍윤', '하나로인화', '온스', '파리동산',
     '안영순', '파리동부', '쿱스모현', '니코', '뚜레제일', '파리부송하나',
     '하나어양', '던킨익산역', '크리모현', '눈들재'
 ]
@@ -31,7 +31,8 @@ except FileNotFoundError:
     print("구성 파일을 찾을 수 없습니다. 새로 생성합니다.")
 
 # pandas를 사용하여 엑셀 파일 읽기
-df = pd.read_excel(config['bread_path'], sheet_name='1123')
+df = pd.read_excel(config['bread_path'], sheet_name='1127')
+print(len(df['빵집']))
 
 # 각 행을 반복하면서 빵 이름을 확인하고 일치하는 이름을 change_list에 추가
 for i, row in df.iterrows():
@@ -41,7 +42,8 @@ for i, row in df.iterrows():
         change_list.append(name_list[index])
 
 print(change_list)
+df = df.reindex(range(len(change_list)))
 df['빵집'] = change_list
 
 # pandas를 사용하여 엑셀 파일 쓰기
-df.to_excel('test.xlsx', sheet_name='1123', index=False)
+df.to_excel('test.xlsx', sheet_name='1127', index=False)

@@ -8,6 +8,7 @@ from tkinter import *
 
 print("파일 불러오기")
 sh_name = input('시트 이름: ')
+active_num = 0
 try:
     df = pd.read_excel("test.xlsx", sheet_name=sh_name)
     print(df)
@@ -18,6 +19,8 @@ except:
 while(True):
     num = input('기관 수: ')
     sum = input("시작 행: ")
+    
+    active_num = int(sum) + int(num)
     
     print("빵 등록")
     
@@ -125,6 +128,8 @@ while(True):
             pa.press('tab')
             time.sleep(0.2)
             pc.copy(str(int(int(data.iloc[2])/5)))
+            if int(int(data.iloc[2])/5) == 0:
+                pc.copy(str('1'))
             pa.hotkey('ctrl', 'v')
             print(int(int(data.iloc[2])/5))
             pa.press('tab')
@@ -142,12 +147,49 @@ while(True):
             pa.press('enter')
             time.sleep(0.2)
 
-    pa.hotkey('alt', 'tab')
     print("빵 제공")
+    time.sleep(0.5)
+    # Point(x=338, y=198)
+    pa.click(x=338, y=198)
+    time.sleep(0.5)
+    # Point(x=1794, y=278)
+    pa.click(x=1794, y=278)
+    time.sleep(1)
+    # Point(x=267, y=431) 재고
+    pa.click(x=267, y=431)
+    time.sleep(0.5)
+    # Point(x=1867, y=407) 플러스
+    pa.click(x=1867, y=407)
+    time.sleep(0.5)
+    # Point(x=684, y=392)
+    pa.click(x=684, y=392)
+    time.sleep(0.5)
+    # Point(x=767, y=325)
+    pa.click(x=767, y=325)
+    time.sleep(0.5)
+    pc.copy(str(data_fr.iloc[0]))
+    pa.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+    pa.press('f2')
+    time.sleep(1)
+    # Point(x=806, y=472)
+    pa.click(x=806, y=472, clicks=2, button='left')
+    time.sleep(0.5)
+    # Point(x=937, y=915)
+    pa.click(x=937, y=915)
+    time.sleep(0.5)
+    # Point(x=1866, y=278)
+    pa.click(x=1866, y=278)
+    time.sleep(0.5)
+    pa.press('enter')
+    time.sleep(0.5)
+    pa.press('enter')
     
     end = input("종료하시겠습니까? (y/n)")
     if end == 'y':
         break
     else:
         print(df)
+        num = active_num
+        print(num)
         continue
