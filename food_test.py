@@ -12,6 +12,15 @@ def on_button9_clicked(): # 시작
     weight_list = [0,1,1,2] # 무게
     num = input("오레시피의 수량을 입력하세요: ")
     count_list[0] = int(num)
+    if num == '0':
+        print('오레시피는 0개입니다.')
+        food_list = ['왕언니', '방교', '오유민'] # 이름
+        cost_list = [10000, 6000, 9000]
+        count_list = [5,5,5]
+        weight_list = [1,1,2]
+        print(cost_list)
+        print(count_list)
+        print(weight_list)
     time_delay = 0.5
     pag.hotkey('alt', 'tab')
     
@@ -27,6 +36,8 @@ def on_button9_clicked(): # 시작
         cost = cost_list[num_count] # 가격
         count = count_list[num_count] # 수량
         weight = weight_list[num_count] # 무게
+        
+        print(i, cost, count, weight)
         
         pag.click(x=454, y=199)
         time.sleep(time_delay)

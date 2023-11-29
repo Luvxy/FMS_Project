@@ -260,7 +260,7 @@ def restart_sign_new_user():
 
         #user_type2
         if j == 0:
-            pyautogui.click(x=722, y=447, clicks=1, button='left')
+            pyautogui.click(x=722, y=452, clicks=1, button='left')
             pyautogui.press("down")
             pyautogui.press("down")
             pyautogui.press("down")
@@ -271,7 +271,7 @@ def restart_sign_new_user():
         j = 0
         for i in type_list:
             if i == user_type3[1]:
-                pyautogui.click(x=1050, y=443, clicks=1, button='left')
+                pyautogui.click(x=1050, y=452, clicks=1, button='left')
                 for k in range(15):
                     pyautogui.press("up")
                 for k in range(j):
@@ -472,40 +472,43 @@ def sign_new_user(user_data, date):
     for i in user_type_list:
         if i == user_type1[1]:
             pyautogui.click(x=459, y=447, clicks=1, button='left')
+            for z in range(3):
+                pyautogui.press("up")
             for k in range(j):
                 pyautogui.press("down")
             pyautogui.press("enter")
             break
         else:
             j+=1
-            pyautogui.click(x=459, y=447, clicks=1, button='left')
-            for z in range(3):
-                pyautogui.press("up")
-            for k in range(0):
-                pyautogui.press("down")
-            pyautogui.press("enter")
+            if j == 5:
+                pyautogui.click(x=459, y=447, clicks=1, button='left')
+                for z in range(3):
+                    pyautogui.press("up")
+                for k in range(0):
+                    pyautogui.press("down")
+                pyautogui.press("enter")
             if j >= 5:
                 messagebox.showinfo("error","엑셀파일의 이용자특성 및 구분 확인")
                 break
             break
-            
+    time.sleep(0.5)
     #user_type2
     if j == 0:
-        pyautogui.click(x=722, y=447, clicks=1, button='left')
+        pyautogui.click(x=722, y=452, clicks=1, button='left')
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("enter")
-    else:
-        pyautogui.click(x=722, y=447, clicks=1, button='left')
+    
 
     #user_type3
     j = 0
     for i in type_list:
         if i == user_type3[1]:
-            print(user_type3[1])
-            pyautogui.click(x=1035, y=450, clicks=1, button='left')
-            for k in range(j+1):
+            pyautogui.click(x=1050, y=452, clicks=1, button='left')
+            for k in range(15):
+                pyautogui.press("up")
+            for k in range(j):
                 pyautogui.press("down")
             pyautogui.press("enter")
             break
