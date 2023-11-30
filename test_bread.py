@@ -16,22 +16,43 @@ except:
     print("시트 이름이 잘못되었습니다.")
     exit()
 
+num_in = []
 while(True):
-    num = input('기관 수: ')
-    sum = input("시작 행: ")
-    
-    active_num = int(sum) + int(num)
+    a = input("순서: ")
+    if a == '.':
+        break
+    else:
+        num_in.append(a)
+num = 0
+sum = 0
+count = 0
+
+while(True):
+    # 한 기관에 등록되는 빵집 수를 리스트로 입력 받음
+    # 입력반은 리스트는 num_in에 저장
+    # 만약'.'을 입력하면 입력을 종료하고 빵 등록 시작
+    # 빵 등록이 끝나면 다음 기관으로 넘어감
+    # 기관 시작 위치 = sum
+    # 기관당 빵집 수 = num
+    # 기관당 빵집 수를 더한 값 = active_num
+    # acrive_num을 통해 다음 기관을 엑셀 데이터에서 지정
+    # active_num을 num에 저장
+    # 문제가 생기면 정지
+
+    active_num = sum + num
+    sum = sum + num
+    num = int(num_in[count])
     
     print("빵 등록")
     
-    row_num = int(sum)
+    row_num = sum
     data_fr = df.iloc[row_num]
     print("기관 명:"+ str(data_fr.iloc[0]))
     print(row_num)
     
     pa.hotkey('alt', 'tab')
     time.sleep(0.5)
-    for i in range(int(num)):
+    for i in range(num):
         print(i)
         data = df.iloc[row_num+i]
         # print(data)
@@ -185,11 +206,6 @@ while(True):
     time.sleep(0.5)
     pa.press('enter')
     
-    end = input("종료하시겠습니까? (y/n)")
-    if end == 'y':
+    count = count + 1
+    if count == len(num_in):
         break
-    else:
-        print(df)
-        num = active_num
-        print(num)
-        continue

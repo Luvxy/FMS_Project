@@ -162,7 +162,7 @@ def restart_sign_new_user():
 
         image = cv2.imread("test"+str(i)+".png")
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        text = tr.image_to_string(gray, lang='eng')
+        text = tr.image_to_string(gray, lang='eng', config='--psm 6 --oem 3')
 
         # Use a regular expression to extract numbers from the text
         numbers = re.findall(r'\d+', text)
@@ -178,11 +178,11 @@ def restart_sign_new_user():
         else:
             is_data = False
             return
-            
-        print(numbers)
+
         user_num = str(data.iloc[num, 5]).split('-')
         if user_num[0] == str(all_number):
             pyautogui.click(x=x1,y=y1,clicks=2,button="left")
+            print("found it "+i)
             is_data = True
             break
                     
@@ -456,7 +456,6 @@ def sign_new_user(user_data, date):
     
 
     # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
-    pyautogui.click(x=690, y=448, clicks=1, button='left')
     user_type1 = str(user_data.iloc[num, 9]).split('.')
     user_type3 = str(user_data.iloc[num, 10]).split('.')
     
@@ -469,9 +468,10 @@ def sign_new_user(user_data, date):
 
     #user_type1
     j = 0
+    time.sleep(0.5)
+    pyautogui.click(x=459, y=447, clicks=1, button='left')
     for i in user_type_list:
         if i == user_type1[1]:
-            pyautogui.click(x=459, y=447, clicks=1, button='left')
             for z in range(3):
                 pyautogui.press("up")
             for k in range(j):
@@ -481,7 +481,6 @@ def sign_new_user(user_data, date):
         else:
             j+=1
             if j == 5:
-                pyautogui.click(x=459, y=447, clicks=1, button='left')
                 for z in range(3):
                     pyautogui.press("up")
                 for k in range(0):
@@ -493,8 +492,11 @@ def sign_new_user(user_data, date):
             break
     time.sleep(0.5)
     #user_type2
+    pyautogui.click(x=722, y=452, clicks=1, button='left')
+    time.sleep(0.5)
+    #user_type2
+    pyautogui.click(x=722, y=452, clicks=1, button='left')
     if j == 0:
-        pyautogui.click(x=722, y=452, clicks=1, button='left')
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("down")
@@ -503,9 +505,10 @@ def sign_new_user(user_data, date):
 
     #user_type3
     j = 0
+    time.sleep(0.5)
+    pyautogui.click(x=1050, y=452, clicks=1, button='left')
     for i in type_list:
         if i == user_type3[1]:
-            pyautogui.click(x=1050, y=452, clicks=1, button='left')
             for k in range(15):
                 pyautogui.press("up")
             for k in range(j):

@@ -16,12 +16,14 @@ name_list = [
     '쿱스토어전북 영등점', '초코', '파리바게뜨 익산고래등', '파리바게뜨 익산이편한', '그랜드제과',
     '파리바게뜨 배산', '파리바게뜨 동산', '쿱스토어전북 어양점', '뚜레쥬르 익산원광', '파리바게뜨 부송제일',
     '크리스피크림도넛(영등점)', '파리바게뜨 익산부송', '뚜레쥬르 익산동산', '파리바게뜨 익산동산', '파리바게뜨 동산',
-    '브레드팜', '파리바게뜨 익산원광', '홍윤', '하나로 베이커리(모현점,인화점)', '온스', '파리바게뜨 익산동산',
+    '브레드팜', '파리바게뜨 익산원광', '홍윤', '하나로 베이커리(모현점,인화점)', '온스베이커리', '파리바게뜨 익산동산',
     '안영순', '파리바게뜨 익산동부', '쿱스토어전북 모현점', '니코니코 과자점', '뚜레쥬루 익산제일', '파리바게뜨 부송하나',
     '하나로 베이커리(어양점)', '던킨도너츠 익산역점', '크리스피크림도넛 익산모현', '눈들재', '당고'
 ]
 
 change_list = []
+
+sh_name = input('시트 이름: ')
 
 # config.json 파일 읽기
 try:
@@ -31,7 +33,7 @@ except FileNotFoundError:
     print("구성 파일을 찾을 수 없습니다. 새로 생성합니다.")
 
 # pandas를 사용하여 엑셀 파일 읽기
-df = pd.read_excel(config['bread_path'], sheet_name='1129')
+df = pd.read_excel(config['bread_path'], sheet_name=sh_name)
 print(len(df['빵집']))
 
 # 각 행을 반복하면서 빵 이름을 확인하고 일치하는 이름을 change_list에 추가
@@ -46,4 +48,4 @@ df = df.reindex(range(len(change_list)))
 df['빵집'] = change_list
 
 # pandas를 사용하여 엑셀 파일 쓰기
-df.to_excel('test.xlsx', sheet_name='1129', index=False)
+df.to_excel('test.xlsx', sheet_name=sh_name, index=False)
