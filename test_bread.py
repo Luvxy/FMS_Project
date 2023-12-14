@@ -169,43 +169,52 @@ while(True):
             time.sleep(0.2)
 
     print("빵 제공")
-    time.sleep(0.5)
-    # Point(x=338, y=198)
-    pa.click(x=338, y=198)
-    time.sleep(0.5)
-    # Point(x=1794, y=278)
-    pa.click(x=1794, y=278)
-    time.sleep(1)
-    # Point(x=267, y=431) 재고
-    pa.click(x=267, y=431)
-    time.sleep(0.5)
-    # Point(x=1867, y=407) 플러스
-    pa.click(x=1867, y=407)
-    time.sleep(0.5)
-    # Point(x=684, y=392)
-    pa.click(x=684, y=392)
-    time.sleep(0.5)
-    # Point(x=767, y=325)
-    pa.click(x=767, y=325)
-    time.sleep(0.5)
-    pc.copy(str(data_fr.iloc[0]))
-    pa.hotkey('ctrl', 'v')
-    time.sleep(0.5)
-    pa.press('f2')
-    time.sleep(1)
-    # Point(x=806, y=472)
-    pa.click(x=806, y=472, clicks=2, button='left')
-    time.sleep(0.5)
-    # Point(x=937, y=915)
-    pa.click(x=937, y=915)
-    time.sleep(0.5)
-    # Point(x=1866, y=278)
-    pa.click(x=1866, y=278)
-    time.sleep(0.5)
-    pa.press('enter')
-    time.sleep(0.5)
-    pa.press('enter')
+    # time.sleep(0.5)
+    # # Point(x=338, y=198)
+    # pa.click(x=338, y=198)
+    # time.sleep(0.5)
+    # # Point(x=1794, y=278)
+    # pa.click(x=1794, y=278)
+    # time.sleep(1)
+    # # Point(x=267, y=431) 재고
+    # pa.click(x=267, y=431)
+    # time.sleep(0.5)
+    # # Point(x=1867, y=407) 플러스
+    # pa.click(x=1867, y=407)
+    # time.sleep(0.5)
+    # # Point(x=684, y=392)
+    # pa.click(x=684, y=392)
+    # time.sleep(0.5)
+    # # Point(x=767, y=325)
+    # pa.click(x=767, y=325)
+    # time.sleep(0.5)
+    # pc.copy(str(data_fr.iloc[0]))
+    # pa.hotkey('ctrl', 'v')
+    # time.sleep(0.5)
+    # pa.press('f2')
+    # time.sleep(1)
+    # # Point(x=806, y=472)
+    # pa.click(x=806, y=472, clicks=2, button='left')
+    # time.sleep(0.5)
+    # # Point(x=937, y=915)
+    # pa.click(x=937, y=915)
+    # time.sleep(0.5)
+    # # Point(x=1866, y=278)
+    # pa.click(x=1866, y=278)
+    # time.sleep(0.5)
+    # pa.press('enter')
+    # time.sleep(0.5)
+    # pa.press('enter')
     
-    count = count + 1
-    if count == len(num_in):
+    # count = count + 1
+    # if count == len(num_in):
+    
+    con = input("계속 하시겠습니까? (y/n): ")
+    if con == 'n':
         break
+    else:
+        count = count + 1
+        if count == len(num_in):
+            break
+    
+    #     break

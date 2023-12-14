@@ -162,7 +162,7 @@ def restart_sign_new_user():
 
         image = cv2.imread("test"+str(i)+".png")
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        text = tr.image_to_string(gray, lang='eng', config='--psm 6 --oem 3')
+        text = tr.image_to_string(gray, lang='eng', config='--psm 6')
 
         # Use a regular expression to extract numbers from the text
         numbers = re.findall(r'\d+', text)
@@ -268,10 +268,10 @@ def restart_sign_new_user():
         
 
         #user_type3
+        pyautogui.click(x=1050, y=452, clicks=2, button='left')
         j = 0
         for i in type_list:
             if i == user_type3[1]:
-                pyautogui.click(x=1050, y=452, clicks=1, button='left')
                 for k in range(15):
                     pyautogui.press("up")
                 for k in range(j):
@@ -303,6 +303,9 @@ def restart_sign_new_user():
         pyperclip.copy(user_num[2])
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
+        
+        # 가구 인원수
+        
 
         # 지원기간 선택(mouse_pos1 = 1035, 587)
         pyautogui.click(x=1065, y=576, clicks=1, button='left')
@@ -319,7 +322,7 @@ def restart_sign_new_user():
         time.sleep(0.5)
 
         # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-        pyautogui.click(x=532, y=718, clicks=2, button='left')
+        pyautogui.click(x=532, y=738, clicks=2, button='left')
         time.sleep(0.5)
         pyautogui.press("right")
         pyautogui.press("enter")
@@ -468,8 +471,8 @@ def sign_new_user(user_data, date):
 
     #user_type1
     j = 0
-    time.sleep(0.5)
     pyautogui.click(x=459, y=447, clicks=1, button='left')
+    time.sleep(0.5)
     for i in user_type_list:
         if i == user_type1[1]:
             for z in range(3):
@@ -496,6 +499,7 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
     #user_type2
     pyautogui.click(x=722, y=452, clicks=1, button='left')
+    time.sleep(0.5)
     if j == 0:
         pyautogui.press("down")
         pyautogui.press("down")
@@ -540,6 +544,17 @@ def sign_new_user(user_data, date):
     pyperclip.copy(user_num[2])
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
+    
+    # 가구 인원수
+    pyautogui.click(x=471, y=697, clicks=2, button='left')
+    fm_num = str(user_data.iloc[num, 8])
+    pyperclip.copy(fm_num)
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+    pyautogui.press('tab')
+    pyperclip.copy('0')
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
 
     # 지원기간 선택(mouse_pos1 = 1035, 587)
     pyautogui.click(x=1035, y=576, clicks=1, button='left')
@@ -549,7 +564,7 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
 
     # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-    pyautogui.click(x=532, y=718, clicks=2, button='left')
+    pyautogui.click(x=532, y=738, clicks=2, button='left')
     time.sleep(0.5)
 
     if is_spe:
