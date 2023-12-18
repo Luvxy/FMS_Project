@@ -53,7 +53,7 @@ def on_button9_clicked(): # 시작
         time.sleep(time_delay)
         pag.click(x=953, y=467, clicks=2, button='left')
         time.sleep(time_delay)
-        pag.click(x=1872, y=431)
+        pag.click(x=1870, y=447)
         time.sleep(time_delay)
         pag.click(x=955, y=455)
         time.sleep(time_delay)
@@ -68,7 +68,7 @@ def on_button9_clicked(): # 시작
         time.sleep(time_delay)
         pag.click(x=950, y=767)
         time.sleep(time_delay)
-        pag.click(x=736, y=504)
+        pag.click(x=749, y=519)
         # 수량
         pc.copy(str(count))
         time.sleep(time_delay)
@@ -91,7 +91,7 @@ def on_button9_clicked(): # 시작
         pag.hotkey('ctrl', 'v')
         time.sleep(time_delay)
         # 저장
-        pag.click(x=1867, y=281)
+        pag.click(x=1869, y=291)
         pag.press('enter')
         time.sleep(time_delay)
         pag.press('enter')

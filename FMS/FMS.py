@@ -21,7 +21,7 @@ import traceback
 # 2. 웹사이트의 저장 버튼을 누름
 # 3. 다음 데이터를 입력하기 전에 3초간 대기
 # 4. 반복
-# 유영자
+# 강신순
 
 # background exe program
 
@@ -146,7 +146,6 @@ def restart_sign_new_user():
     y_plus = 28
     is_data = True
     i = 1
-    is_match = False
     
     pyautogui.click(1733, 276)
     time.sleep(1)
@@ -181,7 +180,7 @@ def restart_sign_new_user():
 
         user_num = str(data.iloc[num, 5]).split('-')
         if user_num[0] == str(all_number):
-            pyautogui.click(x=x1,y=y1,clicks=2,button="left")
+            pyautogui.click(x=x1,y=y1+10,clicks=2,button="left")
             print("found it "+i)
             is_data = True
             break
@@ -388,12 +387,12 @@ def sign_new_user(user_data, date):
 
     # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
     pyautogui.hotkey('alt','tab')
-    pyautogui.moveTo(x=457, y=328)
+    pyautogui.moveTo(x=457, y=342)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.5)
 
     # 이용자명 입력(mouse_pos = 408, 432)
-    pyautogui.click(x=461, y=420, clicks=1, button='left')
+    pyautogui.click(x=461, y=431, clicks=1, button='left')
     is_spe = True
     user_name = str(user_data.iloc[num, 4])
     try:
@@ -413,7 +412,7 @@ def sign_new_user(user_data, date):
     
     time.sleep(0.5)
     #주민등록 번호 입력(mouse_pos1 = 665, 434)
-    pyautogui.click(x=665, y=419, clicks=1, button='left')
+    pyautogui.click(x=665, y=431, clicks=1, button='left')
     user_num = str(user_data.iloc[num, 5]).split('-')
     pyperclip.copy(user_num[0])
     pyautogui.hotkey('ctrl', 'v')
@@ -424,8 +423,8 @@ def sign_new_user(user_data, date):
     is_match = False
     #Point(x=1144, y=212)
     start_time = time.time()
-    green_color = (27, 119, 228)  # (R, G, B) values for pure green
-    target_pixel = (1159, 196)
+    green_color = (55, 105, 57)  # (R, G, B) values for pure green
+    target_pixel = (1114, 212)
     box_size = 10
     while True:
         box = (
@@ -471,7 +470,7 @@ def sign_new_user(user_data, date):
 
     #user_type1
     j = 0
-    pyautogui.click(x=459, y=447, clicks=1, button='left')
+    pyautogui.click(x=459, y=463, clicks=1, button='left')
     time.sleep(0.5)
     for i in user_type_list:
         if i == user_type1[1]:
@@ -495,24 +494,23 @@ def sign_new_user(user_data, date):
             break
     time.sleep(0.5)
     #user_type2
-    pyautogui.click(x=722, y=452, clicks=1, button='left')
+    pyautogui.click(x=722, y=463, clicks=1, button='left')
     time.sleep(0.5)
-    #user_type2
-    pyautogui.click(x=722, y=452, clicks=1, button='left')
-    time.sleep(0.5)
-    if j == 0:
+    if j < 2:
         pyautogui.press("down")
         pyautogui.press("down")
         pyautogui.press("down")
-        pyautogui.press("enter")
+        pyautogui.press("enter") 
     
 
     #user_type3
     j = 0
     time.sleep(0.5)
-    pyautogui.click(x=1050, y=452, clicks=1, button='left')
+    pyautogui.click(x=1050, y=463, clicks=1, button='left')
+    time.sleep(0.5)
     for i in type_list:
         if i == user_type3[1]:
+            print(user_type3)
             for k in range(15):
                 pyautogui.press("up")
             for k in range(j):
@@ -524,7 +522,7 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
     
     # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-    pyautogui.click(x=427, y=518, clicks=1, button='left')
+    pyautogui.click(x=427, y=525, clicks=1, button='left')
     time.sleep(1)
     pyautogui.click(x=861, y=437, clicks=1, button='left')
     pyperclip.copy(user_data.iloc[num, 6])
@@ -535,10 +533,10 @@ def sign_new_user(user_data, date):
     time.sleep(1)
 
     # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-    pyautogui.click(x=400, y=543, clicks=1, button='left')
-    pyautogui.click(x=384, y=591, clicks=1, button='left')
+    pyautogui.click(x=400, y=557, clicks=1, button='left')
+    pyautogui.click(x=384, y=603, clicks=1, button='left')
     user_num = str(user_data.iloc[num, 7]).split('-')
-    pyautogui.click(x=437, y=543, clicks=1, button='left')
+    pyautogui.click(x=437, y=557, clicks=1, button='left')
     pyperclip.copy(user_num[1])
     pyautogui.hotkey('ctrl', 'v')
     pyperclip.copy(user_num[2])
@@ -546,7 +544,7 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
     
     # 가구 인원수
-    pyautogui.click(x=471, y=697, clicks=2, button='left')
+    pyautogui.click(x=445, y=711, clicks=2, button='left')
     fm_num = str(user_data.iloc[num, 8])
     pyperclip.copy(fm_num)
     pyautogui.hotkey('ctrl', 'v')
@@ -557,14 +555,14 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
 
     # 지원기간 선택(mouse_pos1 = 1035, 587)
-    pyautogui.click(x=1035, y=576, clicks=1, button='left')
+    pyautogui.click(x=1051, y=586, clicks=1, button='left')
     for i in range(12):
         pyautogui.press('down')
     pyautogui.press('enter')
     time.sleep(0.5)
 
     # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-    pyautogui.click(x=532, y=738, clicks=2, button='left')
+    pyautogui.click(x=532, y=748, clicks=2, button='left')
     time.sleep(0.5)
 
     if is_spe:

@@ -2,6 +2,6 @@ import pyautogui
 import time
 
 position = pyautogui.position()
-time.sleep(1)
 
 print(position)
+pyautogui.moveTo(x=937, y=920)

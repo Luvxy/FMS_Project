@@ -20,29 +20,32 @@ pyautogui.press('tab')
 pyautogui.press('tab')
 pyautogui.keyUp('alt')
 
-left = 507
-top = 274
-right = 581
-bottom = 294
+left = 365
+top = 273
+right = 416
+bottom = 295
 
-while True:    
+y_p = 22
+
+while True:
     on_num = False
     
     time.sleep(0.2)
-    pyautogui.click(875, 490)
+    pyautogui.click(x=746, y=498)
     time.sleep(0.2)
-    pyautogui.click(1868, 416)
+    pyautogui.click(1868, 419)
     time.sleep(0.2)
-    pyautogui.click(18, 285)
-    time.sleep(0.2)
-    pyautogui.click(18, 285)
-    time.sleep(0.2)
+    pyautogui.click(18, top+12)
+    time.sleep(0.5)
+    pyautogui.click(18, top+12)
+    time.sleep(0.5)
     pyautogui.press('right')
     pyautogui.press('right')
     pyautogui.press('right')
     pyautogui.hotkey('ctrl', 'c')
-    time.sleep(0.2)
+    time.sleep(0.5)
     pyautogui.click(1024, 329)
+    time.sleep(0.5)
     pyautogui.hotkey('ctrl', 'v')
     pyautogui.press('f2')
 
@@ -58,25 +61,29 @@ while True:
     numbers = re.findall(r'\d+', text)
     print(numbers)
 
-    num = str(numbers[0])
+    try:
+        num = str(numbers[0])
+    except:
+        print('over')
+    
     # Print the extracted numbers
     print(num)
     
     if num == '' or num == None:
         break
 
-    #Point(x=1492, y=460)
+    #Point(x=1492, y=460) 1425,465, 1515,488
     #Point(x=1577, y=485)
     # 460 + 25 y축
     is_data = True
-    x1, x2, y1, y2 = 1490, 1580, 460, 485
+    x1, x2, y1, y2 = 1425, 1515, 465, 488
     #when click the esc, stop this while looop
     if keyboard.is_pressed('esc'):
         print("Exiting program.")
         break
     while is_data:
         time.sleep(0.5)
-        y_plus = 25
+        y_plus = 23
 
         img = ImageGrab.grab((x1, y1, x2, y2))
         img.save("test1.png")
@@ -91,7 +98,7 @@ while True:
         # 노이즈 제거
         denoised_image = cv2.fastNlMeansDenoising(binary_image, None, h=10)
 
-        text = tr.image_to_string(denoised_image, lang='eng', config='--psm 6 --oem 3')
+        text = tr.image_to_string(denoised_image, lang='eng', config='--psm 6')
         
         # Use a regular expression to extract numbers from the text
         numbers = re.findall(r'\d+', text)
@@ -106,11 +113,15 @@ while True:
             print(all_number)
         else:
             is_data = False
-        
-        if num == all_number:
-            print(num, all_number)
-            on_num = True
-            is_data = False
+        try:
+            if num == all_number:
+                print(num, all_number)
+                on_num = True
+                is_data = False
+        except:
+            print('no user')
+            on_num = False
+            break
         
         y1 += y_plus
         y2 += y_plus
@@ -118,42 +129,44 @@ while True:
         #when click the esc, stop this while looop
         if keyboard.is_pressed('esc'):
             print("Exiting program.")
+            on_num = False
             break
         
     #when click the esc, stop this while looop
     if keyboard.is_pressed('esc'):
         print("Exiting program.")
+        on_num = False
         break
     
     if on_num:
         time.sleep(0.2)
         pyautogui.click(x=1310, y=y1-15, clicks=2, button='left')
         time.sleep(0.2)
-        pyautogui.click(1237, 915)
+        pyautogui.click(x=1174, y=924)
         time.sleep(0.2)
-        pyautogui.click(18, 285)
-        pyautogui.click(18, 285)
+        pyautogui.click(18, top+12)
+        pyautogui.click(18, top+12)
         time.sleep(0.2)
         pyautogui.hotkey('ctrl', 'c')
-        pyautogui.click(1459, 470)
+        pyautogui.click(x=1331, y=474)
         time.sleep(0.2)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.2)
-        pyautogui.click(18, 285)
-        pyautogui.click(18, 285)
+        pyautogui.click(18, top+12)
+        pyautogui.click(18, top+12)
         time.sleep(0.2)
         pyautogui.press('right')
         pyautogui.press('right')
         pyautogui.hotkey('ctrl', 'c')
         time.sleep(0.2)
-        pyautogui.click(1810,470)
+        pyautogui.click(x=1685, y=473)
         time.sleep(0.2)
         pyautogui.press('delete')
         pyautogui.press('delete')
         pyautogui.press('delete')
         time.sleep(0.2)
         pyautogui.hotkey('ctrl', 'v')
-        pyautogui.click(1869, 289)
+        pyautogui.click(1869, 290)
         time.sleep(0.2)
         pyautogui.press('enter')
         time.sleep(0.2)
@@ -163,11 +176,11 @@ while True:
         time.sleep(0.2)
         pyautogui.press('enter')
         time.sleep(0.2)
-        pyautogui.click(18, 285)
+        pyautogui.click(13, top+12)
         time.sleep(0.2)
-        pyautogui.click(18, 285)
+        pyautogui.click(13, top+12)
         time.sleep(0.2)
-        pyautogui.click(18, 285, clicks=1, button='right')
+        pyautogui.click(13, top+12, clicks=1, button='right')
         time.sleep(0.2)
         pyautogui.press('d')
         
@@ -179,4 +192,10 @@ while True:
         
     else:
         print("no")
-        break
+        top = top + y_p
+        bottom = bottom + y_p
+        pyautogui.click(x=1215, y=918)
+        time.sleep(0.2)
+        pyautogui.click(x=744, y=497)
+        time.sleep(0.2)
+        continue
