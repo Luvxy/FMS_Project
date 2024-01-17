@@ -6,9 +6,33 @@ import pyperclip as pc
 import time
 from tkinter import *
 
+def edit_pos():
+    return pa.position()
+    
+
 print("파일 불러오기")
 sh_name = input('시트 이름: ')
 active_num = 0
+
+# 마우스 위치 수정 및 저장
+rows = 21
+cols = 2
+edit_count = 0 # 진행중인 순서
+mouse_pos = [[0 for j in range(cols)] for i in range(rows)] # 마우스 위치 배열
+if(sh_name == '수정'): # 시트이릅을 수정으로 입력 시 마우스 위치 수정
+    print("수정")
+    while(True):
+        # 마우스 버튼 클릭 시 마우스 위치 저장 후 다음 배열로 이동
+        if pa.mouseUp() == True:        
+            mouse_pos.append(edit_pos())
+            print(mouse_pos[edit_count])
+            edit_count = edit_count + 1
+        elif pa.keyUp('esc') == True: # esc 키 입력 시 마우스 위치 저장 종료
+            break
+        # 전체 다 저장후 종료
+        if(edit_count == 2):
+            break
+
 try:
     df = pd.read_excel("test.xlsx", sheet_name=sh_name)
     print(df)
@@ -22,10 +46,30 @@ while(True):
     if a == '.':
         break
     else:
-        num_in.append(a)
+        num_in.append(int(a))
 num = 0
 sum = 0
 count = 0
+aoj = 0
+
+for i in num_in:
+    if i == '.':
+        continue
+    try:
+        print(df.iloc[aoj+i][0])
+        aoj += i
+    except:
+        print("몰라")
+    
+start = input("시작하시겠습니까? (y/n): ")
+if start == 'n':
+    exit()
+else:
+    print("시작합니다.")
+    time.sleep(1)
+
+count = 0
+pa.hotkey('alt', 'tab')
 
 while(True):
     # 한 기관에 등록되는 빵집 수를 리스트로 입력 받음
@@ -42,15 +86,13 @@ while(True):
     active_num = sum + num
     sum = sum + num
     num = int(num_in[count])
-    
+
     print("빵 등록")
     
     row_num = sum
     data_fr = df.iloc[row_num]
     print("기관 명:"+ str(data_fr.iloc[0]))
     print(row_num)
-    
-    pa.hotkey('alt', 'tab')
     time.sleep(0.5)
     for i in range(num):
         print(i)
@@ -99,7 +141,7 @@ while(True):
             pa.press('tab')
             pa.press('tab') 
             pa.press('tab')
-            pa.press('tab')
+            pa.press('tab') 
             pc.copy(str(data.iloc[4]))
             pa.hotkey('ctrl', 'v')
             time.sleep(0.2)
@@ -136,7 +178,7 @@ while(True):
             pa.click(x=1101, y=453)
             time.sleep(0.5)
             pa.press('f2')
-            time.sleep(0.5)
+            time.sleep(1)
             pa.click(x=1069, y=526, clicks=2, button='left')
             time.sleep(0.5)
             pa.click(x=950, y=767)
@@ -168,19 +210,22 @@ while(True):
             time.sleep(0.5)
             pa.press('enter')
             time.sleep(0.5)
-
+    # when press esc key, stop
+    if pa.keyDown('esc') == True:
+        break
+    
     print("빵 제공")
     time.sleep(0.5)
-    # Point(x=338, y=198)
+    # Point(x=338, y=198)당고
     pa.click(x=338, y=198)
     time.sleep(0.5)
     # Point(x=1794, y=278)
     pa.click(x=1804, y=291)
-    time.sleep(1)
+    time.sleep(1) 
     # Point(x=267, y=431) 재고
     pa.click(x=269, y=445)
     time.sleep(0.5)
-    # Point(x=1867, y=407) 플러스
+    # Point(x=1867, y=407) 플러스18
     pa.click(x=1866, y=418)
     time.sleep(0.5)
     # Point(x=684, y=392)
@@ -207,15 +252,14 @@ while(True):
     time.sleep(0.5)
     pa.press('enter')
     
-    # count = count + 1
-    # if count == len(num_in):
+    count = count + 1
+    time.sleep(1)
     
-    con = input("계속 하시겠습니까? (y/n): ")
-    if con == 'n':
-        break
-    else:
-        count = count + 1
-        if count == len(num_in):
-            break
-    
+    # con = input("계속 하시겠습니까? (y/n): ")
+    # if con == 'n':
     #     break
+    # else:
+    #     print("기관 명:"+ str(data_fr.iloc[0])) 
+    #     if count == len(num_in):
+    #         break
+    
