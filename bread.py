@@ -4,11 +4,23 @@ from tkinter import filedialog as fd
 import pyautogui as pa
 import pyperclip as pc
 import time
+import threading as th
 from tkinter import *
+import keyboard
+import _thread
+
+is_true = False
 
 def edit_pos():
     return pa.position()
     
+def background_task():
+    while True:
+        # 주기적으로 실행되어야 하는 작업 시뮬레이션
+        if keyboard.is_pressed('esc'):
+            _thread.interrupt_main()
+            break
+
 
 print("파일 불러오기")
 sh_name = input('시트 이름: ')
@@ -70,6 +82,11 @@ else:
 
 count = 0
 pa.hotkey('alt', 'tab')
+
+# 백그라운드 작업을 담당할 스레드 생성
+background_thread = th.Thread(target=background_task)
+# 백그라운드 스레드 시작
+background_thread.start()
 
 while(True):
     # 한 기관에 등록되는 빵집 수를 리스트로 입력 받음
@@ -257,9 +274,12 @@ while(True):
     
     # con = input("계속 하시겠습니까? (y/n): ")
     # if con == 'n':
-    #     break
+    #     break1    
     # else:
     #     print("기관 명:"+ str(data_fr.iloc[0])) 
     #     if count == len(num_in):
     #         break
-    
+
+# 백그라운드 스레드 종료
+background_thread.join()
+print("Main thread exits")

@@ -1,5 +1,4 @@
 import pandas as pd
-import json
 
 bread_name_list = [
     '파리어양', '파리이편한', '던킨영등', '파리고래등',
@@ -26,15 +25,9 @@ change_list = []
 
 sh_name = input('시트 이름: ')
 
-# config.json 파일 읽기
-try:
-    with open("config.json", 'r', encoding="utf-8") as config_file:
-        config = json.load(config_file)
-except FileNotFoundError:
-    print("구성 파일을 찾을 수 없습니다. 새로 생성합니다.")
+path = "H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구 (정리 필요 !!!)/빵 관련/아동센터 목록(+배분실적).xlsx"
 
-# pandas를 사용하여 엑셀 파일 읽기
-df = pd.read_excel(config['bread_path'], sheet_name=sh_name)
+df = pd.read_excel(path, sheet_name=sh_name)
 try:
     print(len(df['빵집']))
 except:

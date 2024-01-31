@@ -1,31 +1,56 @@
 import pandas as pd
 import json
+import pytesseract as tr
+import cv2
+from PIL import ImageGrab
+import re
+import pyautogui
+import time
+import keyboard
 
-# Excel 파일 경로
-excel_file_path = 'H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구 (정리 필요 !!!)/아동센터 목록(+배분실적).xlsx'
+y1, y2 = 250, 285
+y_plus = 34
+count = 40
 
-# 읽어올 열(column)의 이름
-column_name = 1
+# Function to extract text from a given region in the image
+def extract_text_from_region(image_path, coordinates, lang='eng'):
+    img = cv2.imread(image_path)
+    region = img[coordinates[1]:coordinates[3], coordinates[0]:coordinates[2]]
+    cv2.imwrite("temp.png", region)
+    image = cv2.imread("temp.png")
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    text = tr.image_to_string(gray, lang=lang, config='--psm 6')
+    return text.strip()
 
-# Excel 파일 읽기
-try:
-    df = pd.read_excel(excel_file_path, sheet_name='1110', usecols=[column_name])
-except FileNotFoundError:
-    print(f"Error: The file '{excel_file_path}' not found.")
-    exit()
+for i in range(count):
+    # Define image path
+    original_image_path = "list_image.jpg"
 
+    # Define coordinates for each region
+    name_coords = (107, y1, 221, y2)
+    id_number_coords = (240, y1, 430, y2)
+    address_coords = (450, y1, 960, y2)
+    phone_number_coords = (980, y1, 1180, y2)
 
-print(df)
-# 열의 데이터를 리스트로 변환
-column_data = df.values.tolist()
+    # Extract information from each region
+    name = extract_text_from_region(original_image_path, name_coords, lang='kor')
+    id_number = extract_text_from_region(original_image_path, id_number_coords, lang='eng')
+    address = extract_text_from_region(original_image_path, address_coords, lang='kor')
+    phone_number = extract_text_from_region(original_image_path, phone_number_coords, lang='eng')
 
-config_data = {
-    'column_data': str(column_data)
-}
+    # Print the extracted information
+    print("Name:", name)
+    print("ID Number:", id_number)
+    print("Address:", address)
+    print("Phone Number:", phone_number)
 
-# config.json 파일에 저장
-config_file_path = 'config2.json'
-with open(config_file_path, 'w', encoding='utf-8') as config_file:
-        json.dump(config_data, config_file, indent=4, ensure_ascii=False)
+    # Create a DataFrame
+    data = {'Name': [name], 'ID Number': [id_number], 'Address': [address], 'Phone Number': [phone_number]}
+    df = pd.DataFrame(data)
 
-print(f"Data from column '{column_name}' has been successfully saved to '{config_file_path}'.")
+    # Export to Excel
+    df.to_excel("output.xlsx", index=False)
+    y1 += y_plus
+    y2 += y_plus
+    
+    print(count)
