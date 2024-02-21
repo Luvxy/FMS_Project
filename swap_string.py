@@ -25,7 +25,7 @@ change_list = []
 
 sh_name = input('시트 이름: ')
 
-path = "H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구 (정리 필요 !!!)/빵 관련/아동센터 목록(+배분실적).xlsx"
+path = "H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구/빵 관련/아동센터 목록(+배분실적)24.2.16ver..xlsx"
 
 df = pd.read_excel(path, sheet_name=sh_name)
 try:

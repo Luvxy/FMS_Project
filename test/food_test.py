@@ -8,16 +8,16 @@ import time
 def on_button9_clicked(): # 시작
     food_list = ['오레시피', '방교', '오유민'] # 이름
     cost_list = [3000, 6000, 10000] # 가격
-    count_list = [0,5] # 수량
-    weight_list = [0,1] # 무게
+    count_list = [0,5,5] # 수량
+    weight_list = [0,1,1] # 무게
     num = input("오레시피의 수량을 입력하세요: ")
     count_list[0] = int(num)
     if num == '0':
         print('오레시피는 0개입니다.')
         food_list = ['방교','오유민'] # 이름
-        cost_list = [6000]
-        count_list = [5]
-        weight_list = [1]
+        cost_list = [6000, 10000]
+        count_list = [5, 5]
+        weight_list = [1,1]
         print(cost_list)
         print(count_list)
         print(weight_list)
