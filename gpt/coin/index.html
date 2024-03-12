@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gascoin Real-time Analysis Chart</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <div id="chart-container" style="width: 80%; height: 80vh; margin: auto;">
+            <canvas id="gascoinChart"></canvas>
+            <script src="app.js"></script>
+            <script src="trade.js"></script>
+            <canvas id="historicalChart"></canvas>
+            <label for="buyPrice">Target Buy Price:</label>
+            <input type="number" id="buyPrice" value="10000" onchange="updateChartTargets()">
+            <label for="sellPrice">Target Sell Price:</label>
+            <input type="number" id="sellPrice" value="12000" onchange="updateChartTargets()">
+        </div>
+    </body>
+</html>

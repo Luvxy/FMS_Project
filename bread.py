@@ -227,9 +227,6 @@ while(True):
             time.sleep(0.5)
             pa.press('enter')
             time.sleep(0.5)
-    # when press esc key, stop
-    if pa.keyDown('esc') == True:
-        break
     
     print("빵 제공")
     time.sleep(0.5)
@@ -246,7 +243,7 @@ while(True):
     pa.click(x=1866, y=418)
     time.sleep(0.5)
     # Point(x=684, y=392)
-    pa.click(x=676, y=397)
+    pa.click(x=680, y=429)
     time.sleep(0.5)
     # Point(x=767, y=325)
     pa.click(x=793, y=333)
@@ -257,7 +254,7 @@ while(True):
     pa.press('f2')
     time.sleep(1)
     # Point(x=806, y=472)
-    pa.click(x=806, y=482, clicks=2, button='left')
+    pa.click(x=956, y=494, clicks=2, button='left')
     time.sleep(0.5)
     # Point(x=937, y=915)
     pa.click(x=937, y=920)
@@ -274,9 +271,10 @@ while(True):
     
     # con = input("계속 하시겠습니까? (y/n): ")
     # if con == 'n':
-    #     break1    
+    #     break
     # else:
     #     print("기관 명:"+ str(data_fr.iloc[0])) 
+    #     pa.hotkey('alt','tab')
     #     if count == len(num_in):
     #         break
 

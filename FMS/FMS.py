@@ -21,7 +21,7 @@ import traceback
 # 2. 웹사이트의 저장 버튼을 누름
 # 3. 다음 데이터를 입력하기 전에 3초간 대기
 # 4. 반복
-# 강신순
+# 89
 
 # background exe program
 
@@ -36,17 +36,24 @@ import traceback
 # 받아온 sorted data 출력
 
 #File I/O path load
-active_num = 2
+active_num = 2+81
 path = "out.xlsx"
-do_list=["이용자 등록","접수등록","제공등록","접수목록 찾기",
+do_list=["이용자 등록","반복등록","제공등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
 date_to = datetime.date.today()
 date = str(date_to.month)+"월"+str(date_to.day)+"일"
 data = ''
 type_num = 1
-bin1 = ["긴급 위기상황 발생자", "읍면동장추천", "긴급지원대상자(9개월)"]
-bin2 = ["차상위계층","복지급여 탈락", "실직 및 휴폐업","주거,교육수급자(6개월)", "차상위계층(6개월)"]
+bin1 = ["긴급 위기상황 발생자", "읍면동장추천", "긴급지원대상자(9개월)", "기타읍면동장책임제 추천자(9개월)"]
+bin2 = ["차상위계층","복지급여 탈락", "실직 및 휴폐업","주거,교육수급자(6개월)", "차상위계층(6개월)", "복지급여탈락자중지자(6개월)"]
 bin3 = ["실직 및 휴폐업", "소득감소자", "생계,의료급여수급자(3개월)", "위기상황발생자(3개월)", "실직 및 휴폐업(3개월)", "소득감소자(3개월)"]
+type_list = ["결식아동","다문화가정","독거어르신","소년소녀가장",
+                    "외국인노동자","재가장애인","저소득가정","조손가정",
+                    "한부모가정","기타 (         )","청장년 1인가구","미혼모부가구",
+                    "부부중심가구","노인부부가구","새터민가구","공통체가구"]
+    
+user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
+                    "소득감소자","복지급여 탈락", "실직 및 휴폐업", "읍면동장추천"]
 
 #log
 def log_user(message):
@@ -62,6 +69,137 @@ def log_user(message):
     log_text.insert(tk.END,'이용자 특성: '+str(message.iloc[active_num,10])+'\n\n')
     log_text.insert(tk.END,'신 청 구 분: '+str(message.iloc[active_num,13])+'\n\n')
         
+
+def click_user_spe(data, t):
+    num_list = [['1','6','7','9'],['3','5'],['2'],['8'],['4']]
+    pyautogui.click(x=422, y=462)
+    if t == 1:
+        for i in range(5):
+            pyautogui.press('up')
+    for i in range(len(num_list)):
+        if num_list[i].count(data) != 0:
+            print(num_list,data)
+            for i in range(i):
+                pyautogui.press('down')
+            pyautogui.press('enter')
+            if i == 0:
+                pyautogui.click(x=719, y=460)
+                time.sleep(0.2)
+                pyautogui.click(x=752, y=529)
+
+def click_user_spe2(data, t):
+    global type_list
+    j = 0
+    time.sleep(0.5)
+    pyautogui.click(x=1001, y=466, clicks=1, button='left')
+    time.sleep(0.5)
+    if t == 1:
+        for i in range(16):
+            pyautogui.press('up')
+    for i in type_list:
+        if i == data:
+            print(data)
+            for k in range(15):
+                pyautogui.press("up")
+            for k in range(j):
+                pyautogui.press("down")
+            pyautogui.press("enter")
+            break
+        j += 1
+
+    time.sleep(0.5) # 15
+
+def edit_date(date, num):
+    tem = date.split('.')
+    a = int(tem[1])+num
+    tem[1] = "0"+str(a)
+    text = tem[0]+'.'+tem[1]+'.'+tem[2]
+    return text
+
+def write_special_note(data, date):
+    global bin1
+    pyautogui.click(x=999, y=777, clicks=2, button='left')
+    time.sleep(0.5)
+    
+    is_bin = True
+    bin = ""
+    add = 0
+    
+    for i in bin1:
+        if i == data:
+            bin = "1순위"
+            is_bin = False
+            add = edit_date(date,9)
+    
+    for i in bin2:
+        if i == data:
+            bin = "2순위"
+            is_bin = False
+            add = edit_date(date,6)
+            
+    for i in bin3:
+        if i == data:
+            bin = "3순위"
+            is_bin = False
+            add = edit_date(date,3)
+
+    if is_bin:
+        bin = "3순위"
+
+    text = "("+str(date)+" ~ "+add+") 마켓 "+bin+" 이용자"
+    pyperclip.copy(text)
+
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+
+def write_address(data):
+    time.sleep(1)
+    pyautogui.click(x=424, y=524)
+    time.sleep(1)
+    pyautogui.click(x=861, y=437)
+    pyperclip.copy(data)
+    pyautogui.hotkey('ctrl', 'v')
+    pyautogui.click(x=1132, y=437)
+    time.sleep(1)
+
+    # 가장 위에 클릭
+    #Point(x=1144, y=212)
+    start_time = time.time()
+    green_color = (254, 230, 200)  # (R, G, B) values for pure green
+    target_pixel = (1028, 513)
+    box_size = 10
+    is_adress = False
+    time.sleep(2)
+    while True:
+        box = (
+            target_pixel[0] - box_size,
+            target_pixel[1] - box_size,
+            target_pixel[0] + box_size,
+            target_pixel[1] + box_size
+        )
+        # Capture only the region around the target pixel
+        screenshot = ImageGrab.grab(bbox=box)
+
+        # Get the pixel color at the center of the bounding box
+        center_pixel_color = screenshot.getpixel((box_size, box_size))
+
+        if center_pixel_color == green_color:
+            print("Green color found at ({}, {})".format(*target_pixel))
+            is_adress = True
+            break
+        else:
+            print("not found")
+        
+        # Check if 3 seconds have passed
+        if time.time() - start_time >= 3:
+            break
+        
+    if is_adress:
+        pyautogui.click(x=948, y=525, clicks=2, button='left')
+        time.sleep(1)
+    else:
+        pyautogui.click(x=1000, y=773)
+        time.sleep(1) 
 
 #log
 def log(message):
@@ -139,7 +277,7 @@ def get_data_from_excel(_path, date):
 # 23.10.20 작업방식 매크로로 전체 통일 추후 소스코딩으로 변경
 
 # restart
-def restart_sign_new_user():
+def restart_sign_new_user(t):
     global data
     global active_num
     global bin1
@@ -235,96 +373,27 @@ def restart_sign_new_user():
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=489, y=431, clicks=1, button='left')
-        is_spe = True
         user_name = str(data.iloc[num, 4])
-        if str(data.iloc[num, 13]).find("+") != -1:
-            pyperclip.copy("＊"+user_name)
-        else:
-            is_spe = False
-            pyperclip.copy(user_name)
-
+        pyperclip.copy(user_name)
         pyautogui.hotkey('ctrl', 'v')
-
         time.sleep(0.5)
-        if is_spe:
-            pyperclip.copy("("+str(date)+") 나눔곳간 1차 이용")
-        else:
-            pyperclip.copy("("+str(date)+") 행복나눔마켓 1차 이용")
 
         # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
         user_type1 = str(data.iloc[num, 9]).split('.')
         user_type3 = str(data.iloc[num, 10]).split('.')
     
         pyautogui.click(x=690, y=448, clicks=1, button='left')
-        type_list = ["결식아동","다문화가정","독거어르신","소년소녀가장",
-                    "외국인노동자","재가장애인","저소득가정","조손가정",
-                    "한부모가정","기타","청장년 1인가구","미혼모부가구",
-                    "부부중심가구","노인부부가구","새터민가구","공통체가구"]
-    
-        user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
-                            "소득감소자","복지급여 탈락", "실직 및 휴폐업", "읍면동장추천"]
-        #user_type1 
-        j = 0
-        pyautogui.click(x=459, y=463)
-        time.sleep(0.5)
-        for i in user_type_list:
-            print("check: "+i)
-            if i == user_type1[1]:
-                if j <= 0:
-                    pyautogui.click(x=460, y=485)
-                    break
-                pyautogui.press("up")
-                pyautogui.press("up")
-                pyautogui.press("up")
-                pyautogui.press("up")
-                for k in range(j):
-                    pyautogui.press("down")
-                time.sleep(0.5)
-                pyautogui.press("enter")
-                break
-            else:
-                j+=1
-                if j > 4:
-                    pyautogui.click(x=460, y=485)
-                    break
-        time.sleep(0.5)
-        #user_type2
-        pyautogui.click(x=722, y=463, clicks=1, button='left')
-        time.sleep(0.5)
-        print(j)
-        if j <= 0 or j>4:
-            pyautogui.click(x=757, y=523)
-        
+        global type_list
+        #user_type1
+        click_user_spe(user_type1[0], 1)
+
+        click_user_spe2(user_type3[1].rstrip(), 1)
 
         #user_type3
-        j = 0
-        time.sleep(0.5)
-        pyautogui.click(x=1050, y=463, clicks=1, button='left')
-        time.sleep(0.5)
-        for i in type_list:
-            if i == user_type3[1]:
-                print(user_type3)
-                for k in range(15):
-                    pyautogui.press("up")
-                for k in range(j):
-                    pyautogui.press("down")
-                pyautogui.press("enter")
-                break
-            j += 1
-
-
         time.sleep(0.5)
         
         # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-        pyautogui.click(x=425, y=522)
-        time.sleep(1)
-        pyautogui.click(x=873, y=434, clicks=1, button='left')
-        pyperclip.copy(data.iloc[num, 6])
-        pyautogui.hotkey('ctrl', 'v')
-        pyautogui.click(x=1132, y=441, clicks=1, button='left')
-        time.sleep(1)
-        pyautogui.click(x=948, y=525, clicks=2, button='left')
-        time.sleep(1)
+        write_address(data.iloc[num, 6])
 
         # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
         user_num = str(data.iloc[num, 7]).split('-')
@@ -334,6 +403,8 @@ def restart_sign_new_user():
         else:
             pyautogui.click(x=400, y=558, clicks=1, button='left')
             for i in range(23):
+                pyautogui.press('up')
+            for i in range(23):
                 pyautogui.press("down")
             pyautogui.press("enter")
         pyautogui.press("tab")
@@ -341,10 +412,7 @@ def restart_sign_new_user():
         pyautogui.hotkey('ctrl', 'v')
         pyperclip.copy(user_num[2])
         pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)
-        
-        # 가구 인원수
-        
+        time.sleep(0.5)        
 
         # 지원기간 선택(mouse_pos1 = 1035, 587)
         pyautogui.click(x=1065, y=615, clicks=1, button='left')
@@ -361,56 +429,42 @@ def restart_sign_new_user():
         time.sleep(0.5)
 
         # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-        pyautogui.click(x=925, y=755, clicks=2, button='left')
+        pyautogui.click(x=999, y=777, clicks=2, button='left')
         time.sleep(0.5)
         pyautogui.press("right")
         pyautogui.press("enter")
         time.sleep(0.5)
-
-
-
-        bin = ""
-
-        for i in bin1:
-            if i == user_type1[1]:
-                bin = "1순위"
-
-        for i in bin2:
-            if i == user_type1[1]:
-                bin = "2순위"
-                
-        for i in bin3:
-            if i == user_type1[1]:
-                bin = "3순위"
-
-        if bin == "":
-            bin = "3순위"
-
-        if is_spe:
-            pyperclip.copy("("+str(date)+") 나눔곳간 "+bin)
-        else:
-            pyperclip.copy("("+str(date)+") 행복나눔마켓 "+bin)
-
-        pyautogui.hotkey('ctrl', 'v')
+        user_date = data.iloc[num, 13]
+        write_special_note(user_type1[1], user_date)
         time.sleep(0.5)
-        pyautogui.hotkey('alt','tab')
-
         global type_num
-        # Your code to execute when 'Yes' is clicked
-        response = messagebox.askquestion("확인","모든 정보가 정확합니까?")
-        if response == "yes":
-            messagebox.showinfo("안내","이용자 정보를 저장합니다.'")
+        if t == 1:
             pyautogui.click(x=1735, y=294)
             pyautogui.press('enter')
-            time.sleep(3)
+            time.sleep(6)
             pyautogui.press('enter')
             pyautogui.click(x=1791, y=292)
             data_print(data,1, type_num)
-            pyautogui.hotkey('alt','tab')
         else:
-            on_click_no()
+            # Your code to execute when 'Yes' is clicked
+            response = messagebox.askquestion("확인","모든 정보가 정확합니까?")
+            if response == "yes":
+                messagebox.showinfo("안내","이용자 정보를 저장합니다.'")
+                pyautogui.click(x=1735, y=294)
+                pyautogui.press('enter')
+                time.sleep(3)
+                pyautogui.press('enter')
+                pyautogui.click(x=1791, y=292)
+                data_print(data,1, type_num)
+                pyautogui.hotkey('alt','tab')
+            else:
+                on_click_no()
     else:
-        messagebox.showinfo("error","?")
+        if t == 1:
+            pyautogui.click(x=1791, y=292)
+            data_print(data,1, type_num)
+        else:
+            messagebox.showinfo("error","?")
 
 
 # Function to handle 'Yes' button click
@@ -440,7 +494,7 @@ def message_box():
         on_click_no()
 
 # 이용자 등록
-def sign_new_user(user_data, date):
+def sign_new_user(user_data, date, t):
     global active_num
     global bin1
     global bin2
@@ -449,26 +503,16 @@ def sign_new_user(user_data, date):
     num = int(active_num)
 
     # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
-    pyautogui.hotkey('alt','tab')
+    if t != 1:
+        pyautogui.hotkey('alt','tab')
     pyautogui.moveTo(x=457, y=342)
     pyautogui.click(clicks=1, button='left')
     time.sleep(0.5)
 
     # 이용자명 입력(mouse_pos = 408, 432)
     pyautogui.click(x=461, y=431, clicks=1, button='left')
-    is_spe = True
     user_name = str(user_data.iloc[num, 4])
-    try:
-        sum1 = str(user_data.iloc[num, 13]).split('+')
-        if sum1[1] == "곳간":
-            is_spe = True
-            pyperclip.copy("＊"+user_name)
-        else:
-            is_spe = False
-            pyperclip.copy(user_name)
-    except:
-        is_spe = False
-        pyperclip.copy(user_name)
+    pyperclip.copy(user_name)
 
     pyautogui.hotkey('ctrl', 'v')
     
@@ -516,79 +560,23 @@ def sign_new_user(user_data, date):
     if is_match:
         time.sleep(1)
         pyautogui.press('esc')
-        restart_sign_new_user()
+        restart_sign_new_user(t)
         return
     
 
     # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
     user_type1 = str(user_data.iloc[num, 9]).split('.')
     user_type3 = str(user_data.iloc[num, 10]).split('.')
-    
-    type_list = ["결식아동","다문화가정","독거어르신","소년소녀가장",
-                    "외국인노동자","재가장애인","저소득가정","조손가정",
-                    "한부모가정","기타","청장년 1인가구","미혼모부가구",
-                    "부부중심가구","노인부부가구","새터민가구","공통체가구"]
-    
-    user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
-                          "소득감소자","복지급여 탈락", "실직 및 휴폐업", "읍면동장추천"]
-    #user_type1
-    j = 0
-    pyautogui.click(x=459, y=463)
-    time.sleep(0.5)
-    for i in user_type_list:
-        if i == user_type1[1]:
-            pyautogui.press("up")
-            pyautogui.press("up")
-            pyautogui.press("up")
-            if j <= 0 or j <4:
-                for k in range(j):
-                    pyautogui.press("down")
-                pyautogui.press("enter")
-            break
-        elif j > 4:
-            pyautogui.press("enter")
-            break
-        else:
-            j+=1
-            
-    time.sleep(0.5)
-    #user_type2
-    pyautogui.click(x=722, y=463, clicks=1, button='left')
-    time.sleep(0.5)
-    if j <= 0 or j >4:
-        pyautogui.press("down")
-        pyautogui.press("down")
-        pyautogui.press("down")
-        pyautogui.press("enter") 
-    
+
+    global type_list
+    #user_type1 
+    click_user_spe(user_type1[0], 0)
 
     #user_type3
-    j = 0
-    time.sleep(0.5)
-    pyautogui.click(x=1050, y=463, clicks=1, button='left')
-    time.sleep(0.5)
-    for i in type_list:
-        if i == user_type3[1]:
-            print(user_type3)
-            for k in range(15):
-                pyautogui.press("up")
-            for k in range(j):
-                pyautogui.press("down")
-            pyautogui.press("enter")
-            break
-
-    time.sleep(0.5)
+    click_user_spe2(user_type3[1].rstrip(), 0)
     
     # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-    pyautogui.click(x=427, y=525)
-    time.sleep(1)
-    pyautogui.click(x=861, y=437, clicks=1, button='left')
-    pyperclip.copy(user_data.iloc[num, 6])
-    pyautogui.hotkey('ctrl', 'v')
-    pyautogui.click(x=1132, y=437, clicks=1, button='left')
-    time.sleep(1)
-    pyautogui.click(x=948, y=516, clicks=2, button='left')
-    time.sleep(1)
+    write_address(user_data.iloc[num, 6])
 
     # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
     pyautogui.click(x=400, y=557, clicks=1, button='left')
@@ -620,44 +608,28 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
 
     # 신청구분 특이사항 입력(date + 이용기관 + '1차 이용')(mouse_pos1 = 435, 718)
-    pyautogui.click(x=532, y=748, clicks=2, button='left')
-    time.sleep(0.5)
-    
-    is_bin = True
-    bin = ""
-    
-    for i in bin1:
-        if i == user_type1[1]:
-            bin = "1순위"
-            is_bin = False
-    
-    for i in bin2:
-        if i == user_type1[1]:
-            bin = "2순위"
-            is_bin = False
-            
-    for i in bin3:
-        if i == user_type1[1]:
-            bin = "3순위"
-            is_bin = False
+    user_date = data.iloc[num, 13]
+    write_special_note(user_type1[1], user_date)
 
-    if is_bin:
-        bin = "3순위"
-
-    if is_spe:
-        pyperclip.copy("("+str(date)+") 나눔곳간 "+bin)
+    if t == 1:
+        pyautogui.click(x=1804, y=280)
+        pyautogui.press('enter')
+        time.sleep(6)
+        pyautogui.press('enter')
+        pyautogui.click(x=1804, y=280)
+        data_print(data,1, type_num)
     else:
-        pyperclip.copy("("+str(date)+") 행복나눔마켓 "+bin)
+        pyautogui.hotkey('alt', 'tab')
+        message_box()
 
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.5)
-
-    pyautogui.hotkey('alt', 'tab')
-    message_box()
-
-# 접수등록
+# 반복 등록
 def receipt_user():
-    1+1
+    global data
+    num = 200
+    pyautogui.hotkey('alt', 'tab')
+    for i in range(num):
+        sign_new_user(data, date, 1)
+        time.sleep(1)
 
 # 제공등록
 def supply_user():
@@ -688,7 +660,11 @@ def start_bt(combo):
     print("시작")
     
     if combo == do_list[0]:
-        thread = threading.Thread(target=sign_new_user(data, date))
+        thread = threading.Thread(target=sign_new_user(data, date, 0))
+        thread.start()
+        tpye_num = 1
+    elif combo == do_list[1]:
+        thread = threading.Thread(target=receipt_user())
         thread.start()
         tpye_num = 1
     else:

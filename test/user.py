@@ -17,16 +17,33 @@ from PIL import ImageGrab
 import traceback
 
 #File I/O path load
-active_num = 0
+active_num = 2
 path = "out.xlsx"
 do_list=["이용자 등록","접수등록","제공등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
 date_to = datetime.date.today()
+date = str(date_to.month)+"월"+str(date_to.day)+"일"
+data = ''
 type_num = 1
-name = active_num*5+1
-id_number = active_num*5+2
-address = active_num*5+3
-phone_number = active_num*5+4
+bin1 = ["긴급 위기상황 발생자", "읍면동장추천", "긴급지원대상자(9개월)", "기타읍면동장책임제 추천자(9개월)"]
+bin2 = ["차상위계층","복지급여 탈락", "실직 및 휴폐업","주거,교육수급자(6개월)", "차상위계층(6개월)", "복지급여탈락자중지자(6개월)"]
+bin3 = ["실직 및 휴폐업", "소득감소자", "생계,의료급여수급자(3개월)", "위기상황발생자(3개월)", "실직 및 휴폐업(3개월)", "소득감소자(3개월)"]
+type_list = ["결식아동","다문화가정","독거어르신","소년소녀가장",
+                    "외국인노동자","재가장애인","저소득가정","조손가정",
+                    "한부모가정","기타","청장년 1인가구","미혼모부가구",
+                    "부부중심가구","노인부부가구","새터민가구","공통체가구"]
+    
+user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
+                    "소득감소자","복지급여 탈락", "실직 및 휴폐업", "읍면동장추천"]
+
+date_to = datetime.date.today()
+type_num = 1
+name = 3
+id_number = 4
+address = 5
+phone_number = 6
+spe1 = 0
+spe1 = 0
 dataF = {'이름': [], '주민등록번호': [], '휴대전화': [], '주소': []}
 
 def add_data(name, id_number, phone_number, address, existing_data_path='demo.xlsx'):
@@ -49,6 +66,139 @@ def add_data(name, id_number, phone_number, address, existing_data_path='demo.xl
 
     # Close the file
     writer.close()
+
+def gick():
+    pyautogui.click(x=608, y=493)
+    time.sleep(0.5)
+    pyautogui.click(x=786, y=391)
+    pyperclip.copy("부송종합사회복지관")
+    pyautogui.hotkey("ctrl",'v')
+    time.sleep(0.2)
+    pyautogui.press("f2")
+    time.sleep(1)
+    pyautogui.click(x=802, y=461, clicks=2, button='left')
+
+def click_user_spe(data, t):
+    num_list = [['1','6','7','9'],['3','5'],['2'],['8'],['4']]
+    time.sleep(0.2)
+    pyautogui.click(x=719, y=460)
+    time.sleep(0.2)
+    pyautogui.click(x=752, y=529)
+
+def click_user_spe2(data, t):
+    global type_list
+    j = 0
+    time.sleep(0.5)
+    pyautogui.click(x=1001, y=466, clicks=1, button='left')
+    time.sleep(0.5)
+    if t == 1:
+        for i in range(16):
+            pyautogui.press('up')
+    for k in range(9):
+        pyautogui.press("down")
+    pyautogui.press("enter")
+
+    time.sleep(0.5) # 15
+
+def edit_date(date, num):
+    tem = date.split('.')
+    a = int(tem[1])+num
+    tem[1] = "0"+str(a)
+    text = tem[0]+'.'+tem[1]+'.'+tem[2]
+    return text
+
+def write_special_note(data, date):
+    global bin1
+    pyautogui.click(x=999, y=777, clicks=2, button='left')
+    time.sleep(0.5)
+    
+    is_bin = True
+    bin = ""
+    add = 0
+    
+    for i in bin1:
+        if i == data:
+            bin = "1순위"
+            is_bin = False
+            add = edit_date(date,9)
+    
+    for i in bin2:
+        if i == data:
+            bin = "2순위"
+            is_bin = False
+            add = edit_date(date,6)
+            
+    for i in bin3:
+        if i == data:
+            bin = "3순위"
+            is_bin = False
+            add = edit_date(date,3)
+
+    if is_bin:
+        bin = "3순위"
+
+    text = "("+str(date)+" ~ "+add+") 마켓 "+bin+" 이용자"
+    pyperclip.copy(text)
+
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+
+def write_address(a, b):
+    global name
+    global id_number
+    global address
+    global phone_number
+    pyautogui.click(x=424, y=524)
+    time.sleep(1)
+    pyautogui.click(x=861, y=437, clicks=1, button='left')
+    pyperclip.copy(a)
+    pyautogui.hotkey('ctrl', 'v')
+    pyautogui.click(x=1132, y=437, clicks=1, button='left')
+    time.sleep(1)
+
+    # 가장 위에 클릭
+    #Point(x=1144, y=212)
+    start_time = time.time()
+    green_color = (254, 230, 200)  # (R, G, B) values for pure green
+    target_pixel = (1028, 513)
+    box_size = 10
+    is_adress = False
+    time.sleep(2)
+    while True:
+        box = (
+            target_pixel[0] - box_size,
+            target_pixel[1] - box_size,
+            target_pixel[0] + box_size,
+            target_pixel[1] + box_size
+        )
+        # Capture only the region around the target pixel
+        screenshot = ImageGrab.grab(bbox=box)
+
+        # Get the pixel color at the center of the bounding box
+        center_pixel_color = screenshot.getpixel((box_size, box_size))
+
+        if center_pixel_color == green_color:
+            print("Green color found at ({}, {})".format(*target_pixel))
+            is_adress = True
+            break
+        else:
+            print("not found")
+        
+        # Check if 3 seconds have passed
+        if time.time() - start_time >= 3:
+            break
+        
+    if is_adress:
+        pyautogui.click(x=948, y=525, clicks=2, button='left')
+        time.sleep(0.5)
+    else:
+        pyautogui.click(x=1000, y=773)
+        user_names = data.loc[active_num].iloc[name] + "(이미 등록됨)"
+        user_id_number = data.loc[active_num].iloc[id_number]
+        user_phone_number = data.loc[active_num].iloc[phone_number]
+        user_address = data.loc[active_num].iloc[address]
+        add_data(user_names, user_id_number, user_phone_number, user_address)
+
 
 def data_print(_data, num, type_num):
     global active_num
@@ -75,7 +225,6 @@ def select_file(sheet_name):
 
     path = filename
     data = get_data_from_excel(path, sheet_name)
-    data_print(data, 0, type_num)
     
 #엑셀 불러오기
 def get_data_from_excel(_path, date):
@@ -91,22 +240,19 @@ def get_data_from_excel(_path, date):
     # data return
     return df
 
-# no address
-def no_address(name, id_number, phone_number, Address):
-    return
-
 # restart
-def restart_sign_new_user(sheet_name):
+def restart_sign_new_user():
     global data
     global active_num
+    global bin1
+    global bin2
+    global bin3
     global name
     global id_number
     global address
     global phone_number
-    user_name = str(data.loc[name].iloc[0])
-    a = str(data.loc[id_number].iloc[0])
-    
-    user_age = a.split('.')
+    num = int(active_num)
+    user_name = str(data.loc[active_num].iloc[name])
     
     x1, y1, x2, y2 = 700, 480, 775, 510
     y_plus = 28
@@ -122,19 +268,16 @@ def restart_sign_new_user(sheet_name):
     pyautogui.click(x=356, y=388)
     
     # 생년월일 입력
-    a = str(data.loc[id_number].iloc[0])
-    print(a)
-    age = a.split('-')
-    print(age)
-    sex_num = age[1]
-    print(sex_num[0])
-    if(sex_num[0] == '1' or sex_num[0] == '2'):
+    # sex_num1, sex_num2 = str(data.loc[num].iloc[id_number]).split('-')
+    sex_num1 = str(data.loc[num].iloc[id_number])
+    sex_num2 = str(data.loc[num].iloc[id_number+1])
+    if(sex_num2[0] == '1' or sex_num2[0] == '2'):
         print("19")
         time.sleep(0.1)
         pyautogui.press('1')
         time.sleep(0.1)
         pyautogui.press('9')
-    elif(sex_num[0] == '3' or sex_num[0] == '4'):
+    elif(sex_num2[0] == '3' or sex_num2[0] == '4'):
         print("20")
         time.sleep(0.1)
         pyautogui.press('2')
@@ -144,7 +287,7 @@ def restart_sign_new_user(sheet_name):
         print("age error")
         return
     time.sleep(0.1)
-    pyperclip.copy(str(age[0]))
+    pyperclip.copy(str(sex_num1))
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.1)
     pyautogui.press("enter")
@@ -180,7 +323,7 @@ def restart_sign_new_user(sheet_name):
             print("not found")
         
         # Check if 3 seconds have passed
-        if time.time() - start_time >= 6:
+        if time.time() - start_time >= 4:
             break
     
     if is_data:
@@ -192,117 +335,45 @@ def restart_sign_new_user(sheet_name):
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=489, y=431, clicks=1, button='left')
-        user_name = str(data.loc[name].iloc[0])
-        pyperclip.copy("○"+user_name)
+        user_name = str(data.iloc[num, name])
+        pyperclip.copy(user_name)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
-        #user_type1 
 
-        
-        # 기관 입력
-        pyautogui.click(x=604, y=494)
+        # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
+        pyautogui.click(x=690, y=448, clicks=1, button='left')
+        global type_list
+        #user_type1
+        click_user_spe("hi", 1)
+
+        #user_type3
+        click_user_spe2("hi", 1)
+
         time.sleep(0.5)
-        pyautogui.click(x=795, y=395)
-        time.sleep(0.5)
-        pyperclip.copy(sheet_name)
-        time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'v')
-        pyautogui.press("f2")
-        time.sleep(2)
-        pyautogui.click(x=944, y=486, clicks=2, button='left') # x=955, y=484
-        time.sleep(1)
-        
-        # 이용자특성은 전부 기초생활 and 독거노인으로 통일
-        pyautogui.click(x=509, y=465)
-        time.sleep(0.5)
-        pyautogui.click(x=484, y=511)
         
         # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-        pyautogui.click(x=425, y=522, clicks=1, button='left')
-        time.sleep(1)
-        pyautogui.click(x=873, y=434, clicks=1, button='left')
-        pyperclip.copy(data.loc[address].iloc[0])
-        pyautogui.hotkey('ctrl', 'v')
-        pyautogui.click(x=1132, y=441, clicks=1, button='left')
-        time.sleep(1)
-        # 가장 위에 클릭
-        #Point(x=1144, y=212)
-        start_time = time.time()
-        green_color = (254, 230, 200)  # (R, G, B) values for pure green
-        target_pixel = (1028, 513)
-        box_size = 10
-        is_adress = False
-        time.sleep(2)
-        while True:
-            box = (
-                target_pixel[0] - box_size,
-                target_pixel[1] - box_size,
-                target_pixel[0] + box_size,
-                target_pixel[1] + box_size
-            )
-            # Capture only the region around the target pixel
-            screenshot = ImageGrab.grab(bbox=box)
-
-            # Get the pixel color at the center of the bounding box
-            center_pixel_color = screenshot.getpixel((box_size, box_size))
-
-            if center_pixel_color == green_color:
-                print("Green color found at ({}, {})".format(*target_pixel))
-                is_adress = True
-                break
-            else:
-                print("not found")
-            
-            # Check if 3 seconds have passed
-            if time.time() - start_time >= 3:
-                break
-            
-        if is_adress:
-            pyautogui.click(x=948, y=525, clicks=2, button='left')
-            time.sleep(1)
-        else:
-            # close the windows
-            pyautogui.click(x=1001, y=776)
-            # save the name to json or excel
-            
-            user_names = data.loc[name].iloc[0] + "(이미 등록됨)"
-            user_id_number = data.loc[id_number].iloc[0]
-            user_phone_number = data.loc[phone_number].iloc[0]
-            user_address = data.loc[address].iloc[0]
-            add_data(user_names, user_id_number, user_phone_number, user_address)
+        write_address(data.iloc[num, address], '1')
 
         # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-        user_num = str(data.loc[phone_number].iloc[0]).split('-')
+        user_num = str(data.iloc[num, phone_number]).split('-')
         if(user_num[0] == "010"):
             pyautogui.click(x=400, y=558, clicks=1, button='left')
             pyautogui.click(x=384, y=601, clicks=1, button='left')
-            pyautogui.press("tab")
-            pyperclip.copy(user_num[1])
-            pyautogui.hotkey('ctrl', 'v')
-            pyperclip.copy(user_num[2])
-            pyautogui.hotkey('ctrl', 'v')
-            time.sleep(0.5)
         else:
             pyautogui.click(x=400, y=558, clicks=1, button='left')
             for i in range(23):
+                pyautogui.press('up')
+            for i in range(23):
                 pyautogui.press("down")
             pyautogui.press("enter")
-            pyautogui.press("tab")
-            pyperclip.copy(user_num[1])
-            pyautogui.hotkey('ctrl', 'v')
-            pyautogui.press("tab")
-            pyperclip.copy(user_num[2])
-            pyautogui.hotkey('ctrl', 'v')
-            time.sleep(0.5)
-        
-        # 이머전시 해제
-        pyautogui.click(x=1040, y=655)
-        time.sleep(0.2)
-        pyautogui.click(x=1099, y=670)
-        time.sleep(0.2)
+        pyautogui.press("tab")
+        pyperclip.copy(user_num[1])
+        pyautogui.hotkey('ctrl', 'v')
+        pyperclip.copy(user_num[2])
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)        
 
         # 지원기간 선택(mouse_pos1 = 1035, 587)
-        time.sleep(1)
         pyautogui.click(x=1065, y=615, clicks=1, button='left')
         for i in range(2):
             pyautogui.press('up')
@@ -315,18 +386,14 @@ def restart_sign_new_user(sheet_name):
             pyautogui.press('down')
         pyautogui.press('enter')
         time.sleep(0.5)
-
+        
         # 비고
         pyautogui.click(x=630, y=824)
         time.sleep(0.5)
-        pyautogui.press('right')
-        time.sleep(0.5)
-        pyautogui.press('enter')
-        time.sleep(0.5)
-        pyperclip.copy(str(sheet_name)+' 연계(2024)')
+        pyperclip.copy('2024 설맞이 꾸러미 수령')
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
-        
+
         global type_num
         # Your code to execute when 'Yes' is clicked
         pyautogui.click(x=1735, y=294)
@@ -334,15 +401,14 @@ def restart_sign_new_user(sheet_name):
         time.sleep(6)
         pyautogui.press('enter')
         pyautogui.click(x=1791, y=292)
-        data_print(data,1, type_num)
     else:
-        user_names = data.loc[name].iloc[0]
-        user_id_number = data.loc[id_number].iloc[0]
-        user_phone_number = data.loc[phone_number].iloc[0]
-        user_address = data.loc[address].iloc[0]
+        user_names = data.loc[num].iloc[name]
+        user_id_number = data.loc[num].iloc[id_number]
+        user_phone_number = data.loc[num].iloc[phone_number]
+        user_address = data.loc[num].iloc[address]
         add_data(user_names, user_id_number, user_phone_number, user_address)
         pyautogui.click(x=1805, y=291)
-        
+
 # Function to handle 'Yes' button click
 def on_click_yes():
     global type_num
@@ -354,7 +420,6 @@ def on_click_yes():
     time.sleep(6)
     pyautogui.press('enter')
     pyautogui.click(x=1804, y=280)
-    data_print(data,1, type_num)
 
 # Function to handle 'No' button click
 def on_click_no():
@@ -370,12 +435,17 @@ def message_box():
     #     on_click_no()
         
 # 이용자 등록
-def sign_new_user(user_data, date, sheet_name):
+def sign_new_user(user_data, date):
     global active_num
+    global bin1
+    global bin2
+    global bin3
     global name
     global id_number
     global address
     global phone_number
+    
+    num = int(active_num)
 
     # ID자동생성 체크박스 클릭(mouse_pos = 456, 340)
     pyautogui.moveTo(x=457, y=342)
@@ -384,18 +454,20 @@ def sign_new_user(user_data, date, sheet_name):
 
     # 이용자명 입력(mouse_pos = 408, 432)
     pyautogui.click(x=461, y=431, clicks=1, button='left')
-    is_spe = True
-    user_name = str(user_data.loc[name].iloc[0])
-    pyperclip.copy("○"+user_name)
+    user_name = str(user_data.iloc[num, name])
+    pyperclip.copy(user_name)
+
     pyautogui.hotkey('ctrl', 'v')
     
     time.sleep(0.5)
     #주민등록 번호 입력(mouse_pos1 = 665, 434)
     pyautogui.click(x=665, y=431, clicks=1, button='left')
-    user_num = str(user_data.loc[id_number].iloc[0]).split('-')
-    pyperclip.copy(user_num[0])
+    # user_num1, user_num2 = str(user_data.iloc[num, id_number]).split('-')
+    user_num1 = str(user_data.loc[num].iloc[id_number])
+    user_num2 = str(user_data.loc[num].iloc[id_number+1])
+    pyperclip.copy(user_num1)
     pyautogui.hotkey('ctrl', 'v')
-    pyperclip.copy(user_num[1])
+    pyperclip.copy(user_num2)
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
 
@@ -408,7 +480,7 @@ def sign_new_user(user_data, date, sheet_name):
     time.sleep(2)
     while True:
         box = (
-            target_pixel[0] - box_size, 
+            target_pixel[0] - box_size,
             target_pixel[1] - box_size, 
             target_pixel[0] + box_size,
             target_pixel[1] + box_size
@@ -433,118 +505,31 @@ def sign_new_user(user_data, date, sheet_name):
     if is_match:
         time.sleep(1)
         pyautogui.press('esc')
-        restart_sign_new_user(sheet_name)
+        restart_sign_new_user()
         return
     
-    #user_type1
-    pyautogui.click(x=471, y=465)
-    time.sleep(0.5)
-    pyautogui.click(x=484, y=511)
-    time.sleep(0.5)
-    pyautogui.click(x=1051, y=464)
-    time.sleep(0.5)
-    pyautogui.press("down")
-    pyautogui.press("down")
-    time.sleep(0.2)
-    pyautogui.press('enter')
+
+    # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
+    global type_list
+    #user_type1 
+    click_user_spe('hi', 0)
+
+    #user_type3
+    click_user_spe2('hi', 0)
     
-    # 기관 입력
-    time.sleep(1)
-    pyautogui.click(x=604, y=494)
-    time.sleep(1)
-    pyautogui.click(x=795, y=395)
-    time.sleep(0.5)
-    pyperclip.copy(str(sheet_name))
-    time.sleep(0.5)
+    # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
+    write_address("부송 주공1", '1')
+
+    # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
+    pyautogui.click(x=400, y=557, clicks=1, button='left')
+    pyautogui.click(x=384, y=603, clicks=1, button='left')
+    user_num = str(user_data.iloc[num, phone_number]).split('-')
+    pyautogui.click(x=437, y=557, clicks=1, button='left')
+    pyperclip.copy(user_num[1])
     pyautogui.hotkey('ctrl', 'v')
-    pyautogui.press("f2")
-    time.sleep(2)
-    pyautogui.click(x=944, y=486, clicks=2, button='left') # x=955, y=484
-    time.sleep(1)
-    
-    # 주소 입력
-    pyautogui.click(x=425, y=522, clicks=1, button='left')
-    time.sleep(1)
-    pyautogui.click(x=873, y=434, clicks=1, button='left')
-    pyperclip.copy(data.loc[address].iloc[0])
+    pyperclip.copy(user_num[2])
     pyautogui.hotkey('ctrl', 'v')
-    pyautogui.click(x=1132, y=441, clicks=1, button='left')
-    time.sleep(1)
-    # 가장 위에 클릭
-    #Point(x=1144, y=212)
-    start_time = time.time()
-    green_color = (254, 230, 200)  # (R, G, B) values for pure green
-    target_pixel = (1028, 513)
-    box_size = 10
-    is_adress = False
-    time.sleep(2)
-    while True:
-        box = (
-            target_pixel[0] - box_size,
-            target_pixel[1] - box_size,
-            target_pixel[0] + box_size,
-            target_pixel[1] + box_size
-        )
-        # Capture only the region around the target pixel
-        screenshot = ImageGrab.grab(bbox=box)
-
-        # Get the pixel color at the center of the bounding box
-        center_pixel_color = screenshot.getpixel((box_size, box_size))
-
-        if center_pixel_color == green_color:
-            print("Green color found at ({}, {})".format(*target_pixel))
-            is_adress = True
-            break
-        else:
-            print("not found")
-        
-        # Check if 3 seconds have passed
-        if time.time() - start_time >= 3:
-            break
-        
-    if is_adress:
-        pyautogui.click(x=948, y=525, clicks=2, button='left')
-        time.sleep(1)
-    else:
-        # close the windows
-        pyautogui.click(x=1001, y=776)
-        # save the name to array
-        
-        user_names = data.loc[name].iloc[0]
-        user_id_number = data.loc[id_number].iloc[0]
-        user_phone_number = data.loc[phone_number].iloc[0]
-        user_address = data.loc[address].iloc[0]
-        add_data(user_names, user_id_number, user_phone_number, user_address)
-        
-        # restart
-        pyautogui.click(x=1735, y=290)
-        time.sleep(1)
-        pyautogui.click(x=1806, y=300)
-        return
-
-    # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603) 23
-    user_num = str(data.loc[phone_number].iloc[0]).split('-')
-    if(user_num[0] == "010"):
-        pyautogui.click(x=400, y=558, clicks=1, button='left')
-        pyautogui.click(x=384, y=601, clicks=1, button='left')
-        pyautogui.press("tab")
-        pyperclip.copy(user_num[1])
-        pyautogui.hotkey('ctrl', 'v')
-        pyperclip.copy(user_num[2])
-        pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)
-    else:
-        pyautogui.click(x=400, y=558, clicks=1, button='left')
-        for i in range(23):
-            pyautogui.press("down")
-        pyautogui.press("enter")
-        pyautogui.press("tab")
-        pyperclip.copy(user_num[1])
-        pyautogui.hotkey('ctrl', 'v')
-        pyautogui.press("tab")
-        pyperclip.copy(user_num[2])
-        pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)
+    time.sleep(0.5)
 
     # 지원기간 선택(mouse_pos1 = 1035, 587)
     pyautogui.click(x=1051, y=586, clicks=1, button='left')
@@ -552,38 +537,29 @@ def sign_new_user(user_data, date, sheet_name):
         pyautogui.press('down')
     pyautogui.press('enter')
     time.sleep(0.5)
-    
+
     # 비고
     pyautogui.click(x=630, y=824)
     time.sleep(0.5)
     pyautogui.press('right')
     time.sleep(0.5)
-    pyperclip.copy(str(sheet_name)+' 연계(2024)')
+    pyperclip.copy('2024 설맞이 꾸러미 수령')
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
 
     message_box()
-    
-## main
-counting = int(input("몇번 반복: "))
-# date_input = input("날짜(ex.2024.1.1): ")
+
+## mai박금순n
+counting = 107
+# da이름te_input = input("날짜(ex.2024.1.1): ")
 date_input = "123"
-sheet_name = "북익산노인복지센터" #input("시트 이름: ")익산시 오산면 영성길 18
+sheet_name = "123" #input("시트 이름: ")익산시 오산면 영성길 18
 select_file(sheet_name)
 pyautogui.hotkey('alt','tab')
 
 for i in range(counting):
-    name = active_num*5+1
-    id_number = active_num*5+2
-    address = active_num*5+3
-    phone_number = active_num*5+4
-    
-    print(str(data.loc[name].iloc[0]))
-    print(str(data.loc[id_number].iloc[0]))
-    print(str(data.loc[address].iloc[0]))
-    print(str(data.loc[phone_number].iloc[0]))
     time.sleep(1)
-    sign_new_user(data, date_input, sheet_name)
+    sign_new_user(data, date_input)
     active_num += 1
     time.sleep(1)
     
