@@ -17,7 +17,7 @@ from PIL import ImageGrab
 import traceback
 
 #File I/O path load
-active_num = 2
+active_num = 0
 path = "out.xlsx"
 do_list=["이용자 등록","접수등록","제공등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
@@ -38,15 +38,15 @@ user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
 
 date_to = datetime.date.today()
 type_num = 1
-name = 3
-id_number = 4
-address = 5
-phone_number = 6
+name = 0
+id_number = 1
+address = 2
+phone_number = 3
 spe1 = 0
 spe1 = 0
 dataF = {'이름': [], '주민등록번호': [], '휴대전화': [], '주소': []}
 
-def add_data(name, id_number, phone_number, address, existing_data_path='demo.xlsx'):
+def add_data(name, id_number, phone_number, address, sheet_name, existing_data_path='demo.xlsx'):
     try:
         # Read existing data from Excel file
         df_initial = pd.read_excel(existing_data_path)
@@ -55,7 +55,7 @@ def add_data(name, id_number, phone_number, address, existing_data_path='demo.xl
         df_initial = pd.DataFrame()
 
     # Add more data to the DataFrame
-    new_data = {'이름': [name], '주민등록번호': [id_number], '휴대전화': [phone_number], '주소': [address]}
+    new_data = {'이름': [name], '주민등록번호': [id_number], '휴대전화': [phone_number], '주소': [address], '시설':[sheet_name]}
     df = pd.concat([df_initial, pd.DataFrame(new_data)], ignore_index=True)
 
     # Create a Pandas Excel writer object using XlsxWriter as the engine
@@ -67,11 +67,11 @@ def add_data(name, id_number, phone_number, address, existing_data_path='demo.xl
     # Close the file
     writer.close()
 
-def gick():
+def gick(name):
     pyautogui.click(x=608, y=493)
     time.sleep(0.5)
     pyautogui.click(x=786, y=391)
-    pyperclip.copy("부송종합사회복지관")
+    pyperclip.copy(name)
     pyautogui.hotkey("ctrl",'v')
     time.sleep(0.2)
     pyautogui.press("f2")
@@ -143,11 +143,12 @@ def write_special_note(data, date):
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
 
-def write_address(a, b):
+def write_address(a, data):
     global name
     global id_number
     global address
     global phone_number
+    global sheet_name
     pyautogui.click(x=424, y=524)
     time.sleep(1)
     pyautogui.click(x=861, y=437, clicks=1, button='left')
@@ -191,13 +192,15 @@ def write_address(a, b):
     if is_adress:
         pyautogui.click(x=948, y=525, clicks=2, button='left')
         time.sleep(0.5)
+        return 1
     else:
         pyautogui.click(x=1000, y=773)
-        user_names = data.loc[active_num].iloc[name] + "(이미 등록됨)"
-        user_id_number = data.loc[active_num].iloc[id_number]
-        user_phone_number = data.loc[active_num].iloc[phone_number]
-        user_address = data.loc[active_num].iloc[address]
-        add_data(user_names, user_id_number, user_phone_number, user_address)
+        user_names = data.iloc[name, 0]
+        user_id_number = data.iloc[id_number, 0]
+        user_phone_number = data.iloc[phone_number, 0]
+        user_address = data.iloc[address, 0]
+        add_data(user_names, user_id_number, user_phone_number, user_address, sheet_name)
+        return -1
 
 
 def data_print(_data, num, type_num):
@@ -241,7 +244,7 @@ def get_data_from_excel(_path, date):
     return df
 
 # restart
-def restart_sign_new_user():
+def restart_sign_new_user(sheet_name):
     global data
     global active_num
     global bin1
@@ -252,7 +255,7 @@ def restart_sign_new_user():
     global address
     global phone_number
     num = int(active_num)
-    user_name = str(data.loc[active_num].iloc[name])
+    user_name = str(data.iloc[name, 0])
     
     x1, y1, x2, y2 = 700, 480, 775, 510
     y_plus = 28
@@ -269,8 +272,7 @@ def restart_sign_new_user():
     
     # 생년월일 입력
     # sex_num1, sex_num2 = str(data.loc[num].iloc[id_number]).split('-')
-    sex_num1 = str(data.loc[num].iloc[id_number])
-    sex_num2 = str(data.loc[num].iloc[id_number+1])
+    sex_num1, sex_num2 = str(data.iloc[id_number, 0]).split("-")
     if(sex_num2[0] == '1' or sex_num2[0] == '2'):
         print("19")
         time.sleep(0.1)
@@ -335,7 +337,7 @@ def restart_sign_new_user():
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=489, y=431, clicks=1, button='left')
-        user_name = str(data.iloc[num, name])
+        user_name = str(data.iloc[name, 0])
         pyperclip.copy(user_name)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
@@ -343,22 +345,26 @@ def restart_sign_new_user():
         # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
         pyautogui.click(x=690, y=448, clicks=1, button='left')
         global type_list
-        #user_type1
-        click_user_spe("hi", 1)
-
-        #user_type3
-        click_user_spe2("hi", 1)
 
         time.sleep(0.5)
         
+        # 기관 입력
+        gick(sheet_name)
+        
         # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-        write_address(data.iloc[num, address], '1')
+        ad = write_address(data.iloc[address, 0], data)
 
         # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-        user_num = str(data.iloc[num, phone_number]).split('-')
+        user_num = str(data.iloc[phone_number, 0]).split('-')
         if(user_num[0] == "010"):
             pyautogui.click(x=400, y=558, clicks=1, button='left')
             pyautogui.click(x=384, y=601, clicks=1, button='left')
+            pyautogui.press("tab")
+            pyperclip.copy(user_num[1])
+            pyautogui.hotkey('ctrl', 'v')
+            pyperclip.copy(user_num[2])
+            pyautogui.hotkey('ctrl', 'v')
+            time.sleep(0.5)        
         else:
             pyautogui.click(x=400, y=558, clicks=1, button='left')
             for i in range(23):
@@ -366,12 +372,13 @@ def restart_sign_new_user():
             for i in range(23):
                 pyautogui.press("down")
             pyautogui.press("enter")
-        pyautogui.press("tab")
-        pyperclip.copy(user_num[1])
-        pyautogui.hotkey('ctrl', 'v')
-        pyperclip.copy(user_num[2])
-        pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)        
+            pyautogui.press("tab")
+            pyperclip.copy(user_num[1])
+            pyautogui.hotkey('ctrl', 'v')
+            pyautogui.press("tab")
+            pyperclip.copy(user_num[2])
+            pyautogui.hotkey('ctrl', 'v')
+            time.sleep(0.5)         
 
         # 지원기간 선택(mouse_pos1 = 1035, 587)
         pyautogui.click(x=1065, y=615, clicks=1, button='left')
@@ -387,12 +394,12 @@ def restart_sign_new_user():
         pyautogui.press('enter')
         time.sleep(0.5)
         
-        # 비고
-        pyautogui.click(x=630, y=824)
-        time.sleep(0.5)
-        pyperclip.copy('2024 설맞이 꾸러미 수령')
-        pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)
+        # # 비고
+        # pyautogui.click(x=630, y=824)
+        # time.sleep(0.5)
+        # pyperclip.copy('2024 설맞이 꾸러미 수령')
+        # pyautogui.hotkey('ctrl', 'v')
+        # time.sleep(0.5)
 
         global type_num
         # Your code to execute when 'Yes' is clicked
@@ -402,11 +409,11 @@ def restart_sign_new_user():
         pyautogui.press('enter')
         pyautogui.click(x=1791, y=292)
     else:
-        user_names = data.loc[num].iloc[name]
-        user_id_number = data.loc[num].iloc[id_number]
-        user_phone_number = data.loc[num].iloc[phone_number]
-        user_address = data.loc[num].iloc[address]
-        add_data(user_names, user_id_number, user_phone_number, user_address)
+        user_names = data.iloc[name, 0]
+        user_id_number = data.iloc[id_number, 0]
+        user_phone_number = data.iloc[phone_number, 0]
+        user_address = data.iloc[address, 0]
+        add_data(user_names, user_id_number, user_phone_number, user_address, sheet_name)
         pyautogui.click(x=1805, y=291)
 
 # Function to handle 'Yes' button click
@@ -435,7 +442,7 @@ def message_box():
     #     on_click_no()
         
 # 이용자 등록
-def sign_new_user(user_data, date):
+def sign_new_user(user_data, date, sheet_name):
     global active_num
     global bin1
     global bin2
@@ -454,17 +461,17 @@ def sign_new_user(user_data, date):
 
     # 이용자명 입력(mouse_pos = 408, 432)
     pyautogui.click(x=461, y=431, clicks=1, button='left')
-    user_name = str(user_data.iloc[num, name])
+    user_name = str(user_data.iloc[name, 0])
     pyperclip.copy(user_name)
 
     pyautogui.hotkey('ctrl', 'v')
     
     time.sleep(0.5)
-    #주민등록 번호 입력(mouse_pos1 = 665, 434)
+    #주민등록 번호 입력(오윤호mouse_pos1 = 665, 434)
     pyautogui.click(x=665, y=431, clicks=1, button='left')
     # user_num1, user_num2 = str(user_data.iloc[num, id_number]).split('-')
-    user_num1 = str(user_data.loc[num].iloc[id_number])
-    user_num2 = str(user_data.loc[num].iloc[id_number+1])
+    user_num1, user_num2 = str(user_data.iloc[id_number, 0]).split("-")
+    
     pyperclip.copy(user_num1)
     pyautogui.hotkey('ctrl', 'v')
     pyperclip.copy(user_num2)
@@ -505,9 +512,10 @@ def sign_new_user(user_data, date):
     if is_match:
         time.sleep(1)
         pyautogui.press('esc')
-        restart_sign_new_user()
+        restart_sign_new_user(sheet_name)
         return
     
+    gick(sheet_name)
 
     # 이용자 구분, 이용자발굴지 선택(mouse_pos1 = 690, 434), 이용자분류 선택(mouse_pos2 = 1050, 458) 2*16
     global type_list
@@ -518,18 +526,38 @@ def sign_new_user(user_data, date):
     click_user_spe2('hi', 0)
     
     # 주소 입력(mouse_pos1 = 427, 523)(mouse_pos2 = 861, 430)(mouse_pos3 = 1132, 442)(mouse_pos4 = 948, 521)
-    write_address("부송 주공1", '1')
+    ad = write_address(user_data.iloc[address, 0], user_data)
 
+    if ad == -1:
+        pyautogui.click(x=1729, y=291)
+        pyautogui.click(x=1806, y=295)
+        return
+    
     # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-    pyautogui.click(x=400, y=557, clicks=1, button='left')
-    pyautogui.click(x=384, y=603, clicks=1, button='left')
-    user_num = str(user_data.iloc[num, phone_number]).split('-')
-    pyautogui.click(x=437, y=557, clicks=1, button='left')
-    pyperclip.copy(user_num[1])
-    pyautogui.hotkey('ctrl', 'v')
-    pyperclip.copy(user_num[2])
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.5)
+    user_num = str(user_data.iloc[phone_number, 0]).split('-')
+    if(user_num[0] == "010"):
+        pyautogui.click(x=400, y=558, clicks=1, button='left')
+        pyautogui.click(x=384, y=601, clicks=1, button='left')
+        pyautogui.press("tab")
+        pyperclip.copy(user_num[1])
+        pyautogui.hotkey('ctrl', 'v')
+        pyperclip.copy(user_num[2])
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)        
+    else:
+        pyautogui.click(x=400, y=558, clicks=1, button='left')
+        for i in range(23):
+            pyautogui.press('up')
+        for i in range(23):
+            pyautogui.press("down")
+        pyautogui.press("enter")
+        pyautogui.press("tab")
+        pyperclip.copy(user_num[1])
+        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.press("tab")
+        pyperclip.copy(user_num[2])
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)   
 
     # 지원기간 선택(mouse_pos1 = 1035, 587)
     pyautogui.click(x=1051, y=586, clicks=1, button='left')
@@ -538,28 +566,31 @@ def sign_new_user(user_data, date):
     pyautogui.press('enter')
     time.sleep(0.5)
 
-    # 비고
-    pyautogui.click(x=630, y=824)
-    time.sleep(0.5)
-    pyautogui.press('right')
-    time.sleep(0.5)
-    pyperclip.copy('2024 설맞이 꾸러미 수령')
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.5)
+    # # 비고
+    # pyautogui.click(x=630, y=824)
+    # time.sleep(0.5)
+    # pyautogui.press('right')
+    # time.sleep(0.5)
+    # pyperclip.copy('2024 설맞이 꾸러미 수령')
+    # pyautogui.hotkey('ctrl', 'v')
+    # time.sleep(0.5)
 
     message_box()
 
 ## mai박금순n
-counting = 107
+counting = 29
 # da이름te_input = input("날짜(ex.2024.1.1): ")
 date_input = "123"
-sheet_name = "123" #input("시트 이름: ")익산시 오산면 영성길 18
+sheet_name = "동산지역아동센터" #input("시트 이름: ")익산시 오산면 영성길 18
 select_file(sheet_name)
 pyautogui.hotkey('alt','tab')
 
 for i in range(counting):
     time.sleep(1)
-    sign_new_user(data, date_input)
+    sign_new_user(data, date_input, sheet_name)
     active_num += 1
+    name = active_num*4
+    id_number = active_num*4+1
+    address = active_num*4+2
+    phone_number = active_num*4+3
     time.sleep(1)
-    

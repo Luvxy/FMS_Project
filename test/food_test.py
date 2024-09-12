@@ -100,3 +100,6 @@ def on_button9_clicked(): # 시작
         time.sleep(time_delay)
     
 on_button9_clicked()
+
+
+

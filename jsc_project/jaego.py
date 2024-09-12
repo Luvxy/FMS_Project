@@ -18,33 +18,36 @@ def select_excel_file():
         print("파일을 선택하지 않았습니다.")
         exit()
 
-def set_excel_data_to_json(excel_file_path, json_file_path):
+def set_excel_data_to_json(excel_file_path, json_file_path, selected_columns):
     # Step 1: Read Excel Data
     df = pd.read_excel(excel_file_path)
 
     # Step 2: Select Relevant Columns
-    selected_columns = ['물품명', '현 재고', '기부일자', "유통기한(소비기한)"]
     selected_data = df[selected_columns]
 
     # Step 3: Convert Data to JSON
     json_data = selected_data.to_json(orient='records', force_ascii=False, indent=4)
-    selected_data['기부일자'] = selected_data['기부일자'].dt.strftime('%Y-%m-%d')
+    selected_data['일자'] = selected_data['일자'].dt.strftime('%Y-%m-%d')
 
     # Step 4: Save to config.json
     with open(json_file_path, 'w', encoding='utf-8-sig') as json_file:
         json_file.write(json_data)
 
-def add_excel_data_to_json(excel_file_path, json_file_path):
+def add_excel_data_to_json(excel_file_path, json_file_path, selected_columns):
     # Step 1: Read Excel Data
     df = pd.read_excel(excel_file_path)
 
-    # Step 2: Select Relevant Columns
-    selected_columns = ['물품명', '현 재고', '기부일자', "유통기한(소비기한)"]
+    # Optional: Normalize column names by stripping trailing spaces
+    df.columns = df.columns.str.strip()
+
+    # Step 2: Select Relevant Columns (make sure these match exactly with your Excel columns)
+    selected_columns = ['이용자ID', '물품명', '일자', "수량"]
     selected_data = df[selected_columns]
+    
+    print (selected_data)
 
     # Step 3: Convert datetime columns to strings with a specific format
-    selected_data['기부일자'] = selected_data['기부일자'].dt.strftime('%Y-%m-%d')
-    selected_data['유통기한(소비기한)'] = selected_data['유통기한(소비기한)'].dt.strftime('%Y-%m-%d')
+    selected_data['일자'] = selected_data['일자'].dt.strftime('%Y-%m-%d')
 
     # Step 4: Convert Data to JSON
     json_data = selected_data.to_dict(orient='records')
@@ -71,3 +74,15 @@ def add_excel_data_to_json(excel_file_path, json_file_path):
     # Step 7: Save updated data to the JSON file
     with open(json_file_path, 'w', encoding='utf-8-sig') as json_file:
         json.dump(existing_data, json_file, default=str, indent=4, ensure_ascii=False)
+        
+def load_data(selected_columns, sheet_name="Sheet1"):
+    path = select_excel_file()
+    df = pd.read_excel(path, sheet_name=sheet_name)
+    
+    # Optional: Normalize column names by stripping trailing spaces
+    df.columns = df.columns.str.strip()
+
+    # Step 2: Select Relevant Columns (make sure these match exactly with your Excel columns)
+    selected_data = df[selected_columns]
+    
+    return selected_data

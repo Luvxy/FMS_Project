@@ -1,9 +1,8 @@
-age = "551015-2536015"
+import pandas as pd
 
-a= age.split('-')
+file_path = "C:/Users/user/Desktop/지역아동센터 new 명단.xlsx"
+# 파일 불러오기
+xls = pd.ExcelFile(file_path)
+sheet_names = xls.sheet_names
 
-b= a[1]
-
-print(b)
-
-print(b[0])
+print(sheet_names)
