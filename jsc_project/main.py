@@ -8,7 +8,6 @@ import pandas as pd
 import cv2
 import re
 import pytesseract as tr
-#유윤석
 
 x1, x2, y1, y2 = 1188, 1276, 484, 507
 json_file_path = 'config.json'

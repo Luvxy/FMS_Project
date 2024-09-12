@@ -21,7 +21,6 @@ import traceback
 # 2. 웹사이트의 저장 버튼을 누름
 # 3. 다음 데이터를 입력하기 전에 3초간 대기
 # 4. 반복
-# 
 
 # background exe program
 
@@ -37,7 +36,7 @@ import traceback
 
 #File I/O path load
 # 
-active_num = 278
+active_num = 2
 path = "out.xlsx"
 do_list=["이용자 등록","반복등록","미등록자 재등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
@@ -152,6 +151,21 @@ def edit_date(date, num_months):
 
     return adjusted_date.strftime(date_format)
 
+def edit_year(date, num_year):
+    date_format = "%Y-%m-%d"
+    # Check if the input is a string and convert it to datetime if necessary
+    if isinstance(date, str):
+        original_date = datetime.datetime.strptime(date, date_format)
+    elif isinstance(date, datetime.datetime):
+        original_date = date
+    else:
+        raise ValueError("The date must be a string in the format YYYY-MM-DD or a datetime.datetime object")
+
+    # Add the months using a method that accounts for varying month lengths
+    adjusted_date = original_date + datetime.timedelta(days=num_year*365)  # Approximation, consider using dateutil for accurate month addition
+
+    return adjusted_date.strftime(date_format)
+
 def write_special_note(data, date):
     global bin1
     global bin2
@@ -182,6 +196,14 @@ def write_special_note(data, date):
     
     pyperclip.copy(text)
     pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+
+def write_end_day(date):
+    add_year = 2
+    new_date = edit_year(date, add_year)
+    pyperclip.copy(new_date)
+    pyautogui.click()
+    pyautogui.hotkey("ctrl", "v")
     time.sleep(0.5)
 
 def write_address(data, active, num):
@@ -847,10 +869,135 @@ def supply_user():
         data_print(data,1, type_num)
         time.sleep(2)
 
-# 접수목록 찾기
+# edit user date
 def search_receipt_user():
-    1+1
+    global data
+    global active_num
+    data_length = len(data)
+    num = int(active_num)
+    user_data = data
+    user_name = str(data.iloc[active_num,4])
+    
+    pyautogui.click(x=969, y=340)
+    pyperclip.copy(user_name)
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.5)
+    pyautogui.click(x=356, y=388)
 
+    # 생년월일 입력
+    a = str(data.iloc[num, 5])
+    print(a)
+    age = a.split('-')
+    print(age)
+    sex_num = age[1]
+    print(sex_num[0])
+    if(sex_num[0] == '1' or sex_num[0] == '2'):
+        print("19")
+        time.sleep(0.1)
+        pyautogui.press('1')
+        time.sleep(0.1)
+        pyautogui.press('9')
+    elif(sex_num[0] == '3' or sex_num[0] == '4'):
+        print("20")
+        time.sleep(0.1)
+        pyautogui.press('2')
+        time.sleep(0.1)
+        pyautogui.press('0')
+    else:
+        print("age error")
+        return
+    time.sleep(0.1)
+    pyperclip.copy(str(age[0]))
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(0.1)
+    pyautogui.press("enter")
+    time.sleep(0.1)
+    pyautogui.press("f2")
+    time.sleep(0.5)
+    
+    # 가장 위에 클릭
+    #Point(x=1144, y=212)
+    start_time = time.time()
+    green_color = (254, 230, 200)  # (R, G, B) values for pure green
+    target_pixel = (282, 515)
+    box_size = 10
+    time.sleep(2)
+    while True:
+        box = (
+            target_pixel[0] - box_size,
+            target_pixel[1] - box_size,
+            target_pixel[0] + box_size,
+            target_pixel[1] + box_size
+        )
+        # Capture only the region around the target pixel
+        screenshot = ImageGrab.grab(bbox=box)
+
+        # Get the pixel color at the center of the bounding box
+        center_pixel_color = screenshot.getpixel((box_size, box_size))
+
+        if center_pixel_color == green_color:
+            print("Green color found at ({}, {})".format(*target_pixel))
+            is_data = True
+            break
+        else:
+            print("not found")
+        
+        # Check if 3 seconds have passed
+        if time.time() - start_time >= 4:
+            break
+    
+    if is_data:
+        pyautogui.click(x=1001, y=507, clicks=2, button='left')
+        time.sleep(1)
+        pyautogui.press("esc")
+        time.sleep(0.5)
+        pyautogui.press("esc")
+        write_end_day(date)
+    
+        # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
+        user_num = str(data.iloc[num, 7]).split('-')
+        if(user_num[0] == "010"):
+            pyautogui.click(x=400, y=558, clicks=1, button='left')
+            pyautogui.click(x=384, y=601, clicks=1, button='left')
+        else:
+            pyautogui.click(x=400, y=558, clicks=1, button='left')
+            for i in range(23):
+                pyautogui.press('up')
+            for i in range(23):
+                pyautogui.press("down")
+            pyautogui.press("enter")
+        pyautogui.press("tab")
+        pyperclip.copy(user_num[1])
+        pyautogui.hotkey('ctrl', 'v')
+        pyperclip.copy(user_num[2])
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.5)        
+    
+        # 지원기간 선택(mouse_pos1 = 1035, 587)
+        pyautogui.click(x=1065, y=615, clicks=1, button='left')
+        for i in range(2):
+            pyautogui.press('up')
+        pyautogui.press('enter')
+        time.sleep(0.5)
+        pyautogui.click(x=1035, y=589, clicks=1, button='left')
+        for i in range(13):
+            pyautogui.press('up')
+        for i in range(12):
+            pyautogui.press('down')
+        pyautogui.press('enter')
+        time.sleep(0.5)
+        
+        pyautogui.click(x=1735, y=294)
+        pyautogui.press('enter')
+        time.sleep(6)
+        pyautogui.press('enter')
+        pyautogui.click(x=1791, y=292)
+        data_print(data,1, type_num)
+    else:
+        pyautogui.click(x=1791, y=292)
+        add_data(data.iloc[num, 4], data.iloc[num, 5], data.iloc[num, 7], data.iloc[num, 6], data.iloc[num, 13])
+        data_print(data, 1, type_num)
+        
 # 제공목록 찾기
 def search_supply_user():
     1+1
@@ -881,6 +1028,10 @@ def start_bt(combo):
         tpye_num = 1
     elif combo == do_list[2]:
         thread = threading.Thread(target=supply_user())
+        thread.start()
+        tpye_num = 1
+    elif combo == do_list[3]:
+        thread = threading.Thread(target=search_receipt_user())
         thread.start()
         tpye_num = 1
     else:
