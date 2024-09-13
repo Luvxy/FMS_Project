@@ -202,7 +202,7 @@ def write_end_day(date):
     add_year = 2
     new_date = edit_year(date, add_year)
     pyperclip.copy(new_date)
-    pyautogui.click()
+    pyautogui.click(x=645, y=617, clicks=3, button="left")
     pyautogui.hotkey("ctrl", "v")
     time.sleep(0.5)
 
@@ -876,127 +876,138 @@ def search_receipt_user():
     data_length = len(data)
     num = int(active_num)
     user_data = data
-    user_name = str(data.iloc[active_num,4])
-    
     pyautogui.click(x=969, y=340)
-    pyperclip.copy(user_name)
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.5)
-    pyautogui.click(x=356, y=388)
-
-    # 생년월일 입력
-    a = str(data.iloc[num, 5])
-    print(a)
-    age = a.split('-')
-    print(age)
-    sex_num = age[1]
-    print(sex_num[0])
-    if(sex_num[0] == '1' or sex_num[0] == '2'):
-        print("19")
-        time.sleep(0.1)
-        pyautogui.press('1')
-        time.sleep(0.1)
-        pyautogui.press('9')
-    elif(sex_num[0] == '3' or sex_num[0] == '4'):
-        print("20")
-        time.sleep(0.1)
-        pyautogui.press('2')
-        time.sleep(0.1)
-        pyautogui.press('0')
-    else:
-        print("age error")
-        return
-    time.sleep(0.1)
-    pyperclip.copy(str(age[0]))
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.1)
-    pyautogui.press("enter")
-    time.sleep(0.1)
-    pyautogui.press("f2")
-    time.sleep(0.5)
     
-    # 가장 위에 클릭
-    #Point(x=1144, y=212)
-    start_time = time.time()
-    green_color = (254, 230, 200)  # (R, G, B) values for pure green
-    target_pixel = (282, 515)
-    box_size = 10
-    time.sleep(2)
-    while True:
-        box = (
-            target_pixel[0] - box_size,
-            target_pixel[1] - box_size,
-            target_pixel[0] + box_size,
-            target_pixel[1] + box_size
-        )
-        # Capture only the region around the target pixel
-        screenshot = ImageGrab.grab(bbox=box)
-
-        # Get the pixel color at the center of the bounding box
-        center_pixel_color = screenshot.getpixel((box_size, box_size))
-
-        if center_pixel_color == green_color:
-            print("Green color found at ({}, {})".format(*target_pixel))
-            is_data = True
-            break
-        else:
-            print("not found")
-        
-        # Check if 3 seconds have passed
-        if time.time() - start_time >= 4:
-            break
-    
-    if is_data:
-        pyautogui.click(x=1001, y=507, clicks=2, button='left')
-        time.sleep(1)
-        pyautogui.press("esc")
+    for hi in range(data_length):
+        num = int(active_num)
+        user_name = str(data.iloc[active_num,4])
+        pyperclip.copy(user_name)
+        pyautogui.click(x=926, y=344, clicks=2, button='left')
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
-        pyautogui.press("esc")
-        write_end_day(date)
-    
-        # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
-        user_num = str(data.iloc[num, 7]).split('-')
-        if(user_num[0] == "010"):
-            pyautogui.click(x=400, y=558, clicks=1, button='left')
-            pyautogui.click(x=384, y=601, clicks=1, button='left')
+        pyautogui.click(x=356, y=388)
+
+        # 생년월일 입력
+        a = str(data.iloc[num, 5])
+        print(a)
+        age = a.split('-')
+        print(age)
+        sex_num = age[1]
+        print(sex_num[0])
+        if(sex_num[0] == '1' or sex_num[0] == '2'):
+            print("19")
+            time.sleep(0.1)
+            pyautogui.press('1')
+            time.sleep(0.1)
+            pyautogui.press('9')
+        elif(sex_num[0] == '3' or sex_num[0] == '4'):
+            print("20")
+            time.sleep(0.1)
+            pyautogui.press('2')
+            time.sleep(0.1)
+            pyautogui.press('0')
         else:
-            pyautogui.click(x=400, y=558, clicks=1, button='left')
-            for i in range(23):
+            print("age error")
+            return
+        time.sleep(0.1)
+        pyperclip.copy(str(age[0]))
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(0.1)
+        pyautogui.press("enter")
+        time.sleep(0.1)
+        pyautogui.press("f2")
+        time.sleep(0.5)
+        
+        # 가장 위에 클릭
+        #Point(x=1144, y=212)
+        start_time = time.time()
+        green_color = (254, 230, 200)  # (R, G, B) values for pure green
+        target_pixel = (282, 515)
+        box_size = 10
+        time.sleep(2)
+        while True:
+            box = (
+                target_pixel[0] - box_size,
+                target_pixel[1] - box_size,
+                target_pixel[0] + box_size,
+                target_pixel[1] + box_size
+            )
+            # Capture only the region around the target pixel
+            screenshot = ImageGrab.grab(bbox=box)
+
+            # Get the pixel color at the center of the bounding box
+            center_pixel_color = screenshot.getpixel((box_size, box_size))
+
+            if center_pixel_color == green_color:
+                print("Green color found at ({}, {})".format(*target_pixel))
+                is_data = True
+                break
+            else:
+                is_data = False
+                print("not found")
+            
+            # Check if 3 seconds have passed
+            if time.time() - start_time >= 4:
+                break
+        
+        if is_data:
+            pyautogui.click(x=1001, y=507, clicks=2, button='left')
+            time.sleep(1)
+            pyautogui.press("esc")
+            time.sleep(0.5)
+            pyautogui.press("esc")
+            user_date = data.iloc[num, 13]
+            try:
+                write_end_day(user_date)
+            except Exception as e:
+                print(e)
+                data_print(data, 1, type_num)
+                pyautogui.click(x=1670, y=294)
+                continue
+        
+            # 번호 입력(mouse_pos1 = 395, 561)(mouse_pos2 = 384, 603)
+            user_num = str(data.iloc[num, 7]).split('-')
+            if(user_num[0] == "010"):
+                pyautogui.click(x=400, y=558, clicks=1, button='left')
+                pyautogui.click(x=384, y=601, clicks=1, button='left')
+            else:
+                pyautogui.click(x=400, y=558, clicks=1, button='left')
+                for i in range(23):
+                    pyautogui.press('up')
+                for i in range(23):
+                    pyautogui.press("down")
+                pyautogui.press("enter")
+            pyautogui.press("tab")
+            pyperclip.copy(user_num[1])
+            pyautogui.hotkey('ctrl', 'v')
+            pyperclip.copy(user_num[2])
+            pyautogui.hotkey('ctrl', 'v')
+            time.sleep(0.5)        
+        
+            # 지원기간 선택(mouse_pos1 = 1035, 587)
+            pyautogui.click(x=1065, y=615, clicks=1, button='left')
+            for i in range(2):
                 pyautogui.press('up')
-            for i in range(23):
-                pyautogui.press("down")
-            pyautogui.press("enter")
-        pyautogui.press("tab")
-        pyperclip.copy(user_num[1])
-        pyautogui.hotkey('ctrl', 'v')
-        pyperclip.copy(user_num[2])
-        pyautogui.hotkey('ctrl', 'v')
-        time.sleep(0.5)        
-    
-        # 지원기간 선택(mouse_pos1 = 1035, 587)
-        pyautogui.click(x=1065, y=615, clicks=1, button='left')
-        for i in range(2):
-            pyautogui.press('up')
-        pyautogui.press('enter')
-        time.sleep(0.5)
-        pyautogui.click(x=1035, y=589, clicks=1, button='left')
-        for i in range(13):
-            pyautogui.press('up')
-        for i in range(12):
-            pyautogui.press('down')
-        pyautogui.press('enter')
-        time.sleep(0.5)
-        
-        pyautogui.click(x=1735, y=294)
-        pyautogui.press('enter')
-        time.sleep(6)
-        pyautogui.press('enter')
-        pyautogui.click(x=1791, y=292)
-        data_print(data,1, type_num)
-    else:
-        pyautogui.click(x=1791, y=292)
-        add_data(data.iloc[num, 4], data.iloc[num, 5], data.iloc[num, 7], data.iloc[num, 6], data.iloc[num, 13])
-        data_print(data, 1, type_num)
+            pyautogui.press('enter')
+            time.sleep(0.5)
+            pyautogui.click(x=1035, y=589, clicks=1, button='left')
+            for i in range(13):
+                pyautogui.press('up')
+            for i in range(12):
+                pyautogui.press('down')
+            pyautogui.press('enter')
+            time.sleep(0.5)
+            
+            pyautogui.click(x=1735, y=294)
+            pyautogui.press('enter')
+            time.sleep(6)
+            pyautogui.press('enter')
+            data_print(data, 1, type_num)
+            time.sleep(1)
+        else:
+            pyautogui.click(x=1728, y=296)
+            add_data(data.iloc[num, 4], data.iloc[num, 5], data.iloc[num, 7], data.iloc[num, 6], data.iloc[num, 13])
+            data_print(data, 1, type_num)
         
 # 제공목록 찾기
 def search_supply_user():
