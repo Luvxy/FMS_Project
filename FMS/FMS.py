@@ -38,7 +38,7 @@ import traceback
 # 
 active_num = 2
 path = "out.xlsx"
-do_list=["이용자 등록","반복등록","미등록자 재등록","접수목록 찾기",
+do_list=["이용자 등록","반복등록","미등록자 재등록","중단일자 수정",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
 date_to = datetime.date.today()
 date = str(date_to.month)+"월"+str(date_to.day)+"일"
@@ -214,6 +214,7 @@ def write_address(data, active, num):
     address = remove_specific_words(str(data.iloc[active, num]))
     pyperclip.copy(address)
     pyautogui.hotkey('ctrl', 'v')
+    time.sleep(1)
     pyautogui.click(x=1132, y=437)
     time.sleep(1)
 
@@ -223,7 +224,7 @@ def write_address(data, active, num):
     green_color = (254, 230, 200)  # (R, G, B) values for pure green
     target_pixel = (1028, 513)
     box_size = 10
-    is_adress = False
+    is_address = False
     time.sleep(2)
     while True:
         box = (
@@ -240,7 +241,7 @@ def write_address(data, active, num):
 
         if center_pixel_color == green_color:
             print("Green color found at ({}, {})".format(*target_pixel))
-            is_adress = True
+            is_address = True
             break
         else:
             print("not found")
@@ -249,7 +250,7 @@ def write_address(data, active, num):
         if time.time() - start_time >= 3:
             break
         
-    if is_adress:
+    if is_address:
         pyautogui.click(x=948, y=525, clicks=2, button='left')
     else:
         pyautogui.click(x=1000, y=773)
@@ -883,6 +884,7 @@ def search_receipt_user():
         user_name = str(data.iloc[active_num,4])
         pyperclip.copy(user_name)
         pyautogui.click(x=926, y=344, clicks=2, button='left')
+        time.sleep(1)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
         pyautogui.click(x=356, y=388)
@@ -1006,12 +1008,14 @@ def search_receipt_user():
             time.sleep(1)
         else:
             pyautogui.click(x=1728, y=296)
+            time.sleep(1)
             add_data(data.iloc[num, 4], data.iloc[num, 5], data.iloc[num, 7], data.iloc[num, 6], data.iloc[num, 13])
             data_print(data, 1, type_num)
+            
         
-# 제공목록 찾기
+# 미등록
 def search_supply_user():
-    1+1
+    pass
 
 # 접수현황 수정
 def edit_receipt_user():

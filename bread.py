@@ -11,12 +11,12 @@ import _thread
 import keyboard
 from tkinter import messagebox
 from PIL import ImageGrab
+from swap_string import swap_st
 
 is_true = False
 
-def find_obj(x, y):
+def find_obj(x, y, green_color = (254, 230, 200)):
     start_time = time.time()
-    green_color = (254, 230, 200)  # (R, G, B) values for pure green
     target_pixel = (x, y)
     box_size = 10
     is_adress = False
@@ -42,7 +42,7 @@ def find_obj(x, y):
             print("not found")
         
         # Check if 3 seconds have passed
-        if time.time() - start_time >= 3:
+        if time.time() - start_time >= 5:
             break
         
     if is_adress:
@@ -60,9 +60,13 @@ def background_task():
             _thread.interrupt_main()
             break
 
+sh_name = input('시트 이름: ')
+
+
+if sh_name != "0":
+    swap_st(sh_name)
 
 print("파일 불러오기")
-sh_name = input('시트 이름: ')
 active_num = 0
 
 # 마우스 위치 수정 및 저장
@@ -413,7 +417,7 @@ while(True):
         pa.click(x=1847, y=291)
         time.sleep(0.5)
         pa.press('enter')
-        time.sleep(0.5)
+        time.sleep(4)
         pa.press('enter')
         group += 1
     else:
@@ -436,7 +440,7 @@ while(True):
         pa.click(x=1847, y=291)
         time.sleep(0.5)
         pa.press('enter')
-        time.sleep(0.5)
+        time.sleep(4)
         pa.press('enter')
         monos += 1
     

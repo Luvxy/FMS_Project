@@ -17,7 +17,7 @@ from PIL import ImageGrab
 import traceback
 4102152544128
 #File I/O path load
-active_num = 0
+active_num = 0+11
 path = "out.xlsx"
 do_list=["이용자 등록","접수등록","제공등록","접수목록 찾기",
             "제공목록 찾기","접수현황 수정","제공현황 수정"]
@@ -39,13 +39,13 @@ user_type_list = ["긴급 위기상황 발생자","수급자","차상위계층",
 date_to = datetime.date.today()
 type_num = 1
 name = "이름"
-id_number = "주민등록번호"
+id_number = "주민등록번호(뒷자리포함)"
 address = "주소"
 phone_number = "연락처"
 spe1 = 0
 spe1 = 0
 dataF = {'이름': [], '주민등록번호': [], '휴대전화': [], '주소': []}
-selected_columns = ['이름', '연락처', '주민등록번호', '주소']
+selected_columns = ['이름', '연락처', '주민등록번호(뒷자리포함)', '주소']
 
 def remove_specific_words(text):
     # 분할된 단어들 중 '통' 또는 '반'을 포함하지 않은 단어들만 선택하여 새 문자열 생성
@@ -345,7 +345,7 @@ def restart_sign_new_user():
 
         # 이용자명 입력(mouse_pos = 408, 432)
         pyautogui.click(x=489, y=431, clicks=1, button='left')
-        user_name = "§"+str(df[name])
+        user_name = "▒"+str(df[name])
         pyperclip.copy(user_name)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
@@ -405,7 +405,7 @@ def restart_sign_new_user():
         # 비고
         pyautogui.click(x=630, y=824)
         time.sleep(0.5)
-        pyperclip.copy('2024 추석 꾸러미 수령')
+        pyperclip.copy('로얄타일 백미 20kg 수령자 2024.09')
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(0.5)
 
@@ -469,7 +469,7 @@ def sign_new_user(user_data, date):
 
     # 이용자명 입력(mouse_pos = 408, 432)
     pyautogui.click(x=461, y=431, clicks=1, button='left')
-    user_name = "§"+str(df[name])
+    user_name = "▒"+str(df[name])
     pyperclip.copy(user_name)
 
     pyautogui.hotkey('ctrl', 'v')
@@ -575,7 +575,7 @@ def sign_new_user(user_data, date):
     time.sleep(0.5)
     pyautogui.press('right')
     time.sleep(0.5)
-    pyperclip.copy('2024 추석 꾸러미 수령')
+    pyperclip.copy('로얄타일 백미 20kg 수령자 2024.09')
     pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
 

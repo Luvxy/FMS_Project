@@ -372,7 +372,7 @@ data_length = len(data)
 pa.hotkey('alt', 'tab')
 for i in range(data_length):
     print("----------------------------------------------------------")
-    data.loc[data.index[i], '물품명'] = 'CJ'
+    data.loc[data.index[i], '물품명'] = '수해'
     # data.loc[data.index[i], '수량'] = 2
     # play_t(data.iloc[i]) # 시설
     user_t(data.iloc[i]) # 이용자(생년월일)

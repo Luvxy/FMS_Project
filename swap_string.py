@@ -26,28 +26,29 @@ name_list = [
 
 change_list = []
 
-sh_name = input('시트 이름: ')
+def swap_st(name):
+    sh_name = name
 
-path = "H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구/빵 관련/아동센터 목록(+배분실적)24.2.16ver..xlsx"
+    path = "H:/.shortcut-targets-by-id/1A0TIuPAsmbBdRF01K7yT89PSL4LTaONB/익산행복나눔마켓뱅크/3. 양식 및 도구/빵 관련/아동센터 목록(+배분실적)24.2.16ver..xlsx"
 
-df = pd.read_excel(path, sheet_name=sh_name)
-try:
-    print(len(df['빵집']))
-except:
-    print("column 이름이 잘못되었습니다.")
+    df = pd.read_excel(path, sheet_name=sh_name)
+    try:
+        print(len(df['빵집']))
+    except:
+        print("column 이름이 잘못되었습니다.")
 
-# 각 행을 반복하면서 빵 이름을 확인하고 일치하는 이름을 change_list에 추가
-for i, row in df.iterrows():
-    bread_name = row['빵집']
-    if bread_name in bread_name_list:
-        index = bread_name_list.index(bread_name)
-        change_list.append(name_list[index])
-    else:
-        print(f"문제: {bread_name}")
+    # 각 행을 반복하면서 빵 이름을 확인하고 일치하는 이름을 change_list에 추가
+    for i, row in df.iterrows():
+        bread_name = row['빵집']
+        if bread_name in bread_name_list:
+            index = bread_name_list.index(bread_name)
+            change_list.append(name_list[index])
+        else:
+            print(f"문제: {bread_name}")
 
-print(change_list)
-df = df.reindex(range(len(change_list)))
-df['빵집'] = change_list
+    print(change_list)
+    df = df.reindex(range(len(change_list)))
+    df['빵집'] = change_list
 
-# pandas를 사용하여 엑셀 파일 쓰기
-df.to_excel('test.xlsx', sheet_name=sh_name, index=False)
+    # pandas를 사용하여 엑셀 파일 쓰기
+    df.to_excel('test.xlsx', sheet_name=sh_name, index=False)
